@@ -67,7 +67,3 @@ $custom-theme: mat.define-dark-theme((
 
 // Apply the dark theme by default
 @include mat.all-component-themes($custom-theme);
-
-// Global styles
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

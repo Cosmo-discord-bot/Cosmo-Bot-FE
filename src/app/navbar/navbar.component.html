@@ -1,1 +1,22 @@
-<p>navbar works!</p>
+<mat-toolbar color="primary">
+  <div class="navbar-left">
+    <button mat-button routerLink="/home">Home</button>
+    <button mat-button routerLink="/docs">Docs</button>
+    <button mat-button routerLink="/commands">Commands</button>
+  </div>
+  <span class="spacer"></span>
+  <div class="navbar-right">
+    <ng-container *ngIf="!isLoggedIn; else loggedIn">
+      <button mat-raised-button color="accent" (click)="login()">Login</button>
+    </ng-container>
+    <ng-template #loggedIn>
+      <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="User menu">
+        <mat-icon>account_circle</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item routerLink="/profile">Profile</button>
+        <button mat-menu-item (click)="logout()">Logout</button>
+      </mat-menu>
+    </ng-template>
+  </div>
+</mat-toolbar>
