@@ -19,7 +19,7 @@ import { statisticsRoutes } from './statistics-routing.module';
     providers: [],
     exports: [
         // Export components if they need to be used outside this module
-        OverviewComponent,
+        // OverviewComponent,
     ],
 })
 export class StatisticsModule {}

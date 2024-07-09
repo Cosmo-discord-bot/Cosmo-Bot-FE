@@ -1,7 +1,4 @@
 import { Routes } from '@angular/router';
-import { CommandsComponent } from './features/commands/commands.component';
-import { StatisticsModule } from './features/statistics/statistics.module';
-// Import other components as needed
 
 export const routes: Routes = [
     { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -13,13 +10,7 @@ export const routes: Routes = [
     },
     {
         path: 'commands',
-        component: CommandsComponent,
-        children: [
-            { path: '', redirectTo: 'list', pathMatch: 'full' },
-            //{ path: 'list', loadComponent: () => import('./commands/list/list.component').then((m) => m.ListComponent) },
-            //{ path: 'add', loadComponent: () => import('./commands/add/add.component').then((m) => m.AddComponent) },
-            // Add more subroutes
-        ],
+        loadChildren: () => import('./features/commands/commands.module').then((m) => m.CommandsModule),
     },
     { path: 'profile', loadComponent: () => import('./features/profile/profile.component').then((m) => m.ProfileComponent) },
     // Add more main routes as needed

@@ -3,18 +3,21 @@
 // Include the common styles for Angular Material
 @include mat.core();
 
+$primary-color: #202328;
+$secondary-color: #101517;
+
 // Define your custom palette
 $primary-palette: (
-    50: lighten(#3b4042, 40%),
-    100: lighten(#3b4042, 30%),
-    200: lighten(#3b4042, 20%),
-    300: lighten(#3b4042, 10%),
-    400: lighten(#3b4042, 5%),
-    500: #3b4042,
-    600: darken(#3b4042, 5%),
-    700: darken(#3b4042, 10%),
-    800: darken(#3b4042, 20%),
-    900: darken(#3b4042, 30%),
+    50: lighten($primary-color, 40%),
+    100: lighten($primary-color, 30%),
+    200: lighten($primary-color, 20%),
+    300: lighten($primary-color, 10%),
+    400: lighten($primary-color, 5%),
+    500: $primary-color,
+    600: darken($primary-color, 5%),
+    700: darken($primary-color, 10%),
+    800: darken($primary-color, 20%),
+    900: darken($primary-color, 30%),
     contrast: (
         50: rgba(black, 0.87),
         100: rgba(black, 0.87),
@@ -30,16 +33,16 @@ $primary-palette: (
 );
 
 $secondary-palette: (
-    50: lighten(#b3cad3, 40%),
-    100: lighten(#b3cad3, 30%),
-    200: lighten(#b3cad3, 20%),
-    300: lighten(#b3cad3, 10%),
-    400: lighten(#b3cad3, 5%),
-    500: #b3cad3,
-    600: darken(#b3cad3, 5%),
-    700: darken(#b3cad3, 10%),
-    800: darken(#b3cad3, 20%),
-    900: darken(#b3cad3, 30%),
+    50: lighten($secondary-color, 40%),
+    100: lighten($secondary-color, 30%),
+    200: lighten($secondary-color, 20%),
+    300: lighten($secondary-color, 10%),
+    400: lighten($secondary-color, 5%),
+    500: $secondary-color,
+    600: darken($secondary-color, 5%),
+    700: darken($secondary-color, 10%),
+    800: darken($secondary-color, 20%),
+    900: darken($secondary-color, 30%),
     contrast: (
         50: rgba(black, 0.87),
         100: rgba(black, 0.87),
@@ -75,9 +78,14 @@ html,
 body {
     height: 100%;
 }
+
 body {
     margin: 0;
-    font-family: Roboto, 'Helvetica Neue', sans-serif;
+    font-family:Arial, 'Helvetica Neue', sans-serif;
+}
+
+app-navbar {
+    font-family: "Arial", "Helvetica Neue", sans-serif;
 }
 
 app-root {

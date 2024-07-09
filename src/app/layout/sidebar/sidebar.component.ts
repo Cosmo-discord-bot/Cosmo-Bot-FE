@@ -15,9 +15,11 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 export class SidebarComponent implements OnInit {
     currentRoute: string = '';
     sidebarItems: { [key: string]: string[] } = {
-        statistics: ['Overview', 'Users', 'Commands', 'Servers'],
+        home: ['TODO'],
+        statistics: ['Overview', 'Users', 'Commands', 'Messages'],
         // TODO: Get commands from API
-        commands: ['List', 'Add', 'Edit', 'Delete'],
+        commands: ['Overview', 'Music', 'Settings'],
+        docs: ['API'],
         // Add more routes and their corresponding sidebar items
     };
 
