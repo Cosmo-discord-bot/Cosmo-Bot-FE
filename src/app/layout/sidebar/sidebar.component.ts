@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, NavigationEnd, RouterModule } from '@angular/router';
-import { filter } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 
@@ -16,6 +16,7 @@ export class SidebarComponent implements OnInit {
     currentRoute: string = '';
     sidebarItems: { [key: string]: string[] } = {
         statistics: ['Overview', 'Users', 'Commands', 'Servers'],
+        // TODO: Get commands from API
         commands: ['List', 'Add', 'Edit', 'Delete'],
         // Add more routes and their corresponding sidebar items
     };
@@ -23,15 +24,13 @@ export class SidebarComponent implements OnInit {
     constructor(private router: Router) {}
 
     ngOnInit() {
-        //this.router.events
-        //    .pipe(
-        //        filter((event: Event): event is NavigationEnd => event instanceof NavigationEnd),
-        //        map((event: NavigationEnd) => event.urlAfterRedirects)
-        //    )
-        //    .subscribe((url: string) => {
-        //        this.currentRoute = url.split('/')[1] || 'home';
-        //    });
-
-        this.currentRoute = 'statistics';
+        this.router.events
+            .pipe(
+                filter((event): event is NavigationEnd => event instanceof NavigationEnd),
+                map((event: NavigationEnd) => event.urlAfterRedirects)
+            )
+            .subscribe((url: string) => {
+                this.currentRoute = url.split('/')[1] || 'home';
+            });
     }
 }

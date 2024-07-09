@@ -5,75 +5,83 @@
 
 // Define your custom palette
 $primary-palette: (
-  50: lighten(#3b4042, 40%),
-  100: lighten(#3b4042, 30%),
-  200: lighten(#3b4042, 20%),
-  300: lighten(#3b4042, 10%),
-  400: lighten(#3b4042, 5%),
-  500: #3b4042,
-  600: darken(#3b4042, 5%),
-  700: darken(#3b4042, 10%),
-  800: darken(#3b4042, 20%),
-  900: darken(#3b4042, 30%),
-  contrast: (
-    50: rgba(black, 0.87),
-    100: rgba(black, 0.87),
-    200: rgba(black, 0.87),
-    300: white,
-    400: white,
-    500: white,
-    600: white,
-    700: white,
-    800: white,
-    900: white,
-  )
+    50: lighten(#3b4042, 40%),
+    100: lighten(#3b4042, 30%),
+    200: lighten(#3b4042, 20%),
+    300: lighten(#3b4042, 10%),
+    400: lighten(#3b4042, 5%),
+    500: #3b4042,
+    600: darken(#3b4042, 5%),
+    700: darken(#3b4042, 10%),
+    800: darken(#3b4042, 20%),
+    900: darken(#3b4042, 30%),
+    contrast: (
+        50: rgba(black, 0.87),
+        100: rgba(black, 0.87),
+        200: rgba(black, 0.87),
+        300: white,
+        400: white,
+        500: white,
+        600: white,
+        700: white,
+        800: white,
+        900: white,
+    ),
 );
 
 $secondary-palette: (
-  50: lighten(#b3cad3, 40%),
-  100: lighten(#b3cad3, 30%),
-  200: lighten(#b3cad3, 20%),
-  300: lighten(#b3cad3, 10%),
-  400: lighten(#b3cad3, 5%),
-  500: #b3cad3,
-  600: darken(#b3cad3, 5%),
-  700: darken(#b3cad3, 10%),
-  800: darken(#b3cad3, 20%),
-  900: darken(#b3cad3, 30%),
-  contrast: (
-    50: rgba(black, 0.87),
-    100: rgba(black, 0.87),
-    200: rgba(black, 0.87),
-    300: rgba(black, 0.87),
-    400: rgba(black, 0.87),
-    500: rgba(black, 0.87),
-    600: white,
-    700: white,
-    800: white,
-    900: white,
-  )
+    50: lighten(#b3cad3, 40%),
+    100: lighten(#b3cad3, 30%),
+    200: lighten(#b3cad3, 20%),
+    300: lighten(#b3cad3, 10%),
+    400: lighten(#b3cad3, 5%),
+    500: #b3cad3,
+    600: darken(#b3cad3, 5%),
+    700: darken(#b3cad3, 10%),
+    800: darken(#b3cad3, 20%),
+    900: darken(#b3cad3, 30%),
+    contrast: (
+        50: rgba(black, 0.87),
+        100: rgba(black, 0.87),
+        200: rgba(black, 0.87),
+        300: rgba(black, 0.87),
+        400: rgba(black, 0.87),
+        500: rgba(black, 0.87),
+        600: white,
+        700: white,
+        800: white,
+        900: white,
+    ),
 );
 
 // Define your custom theme
-$custom-theme: mat.define-dark-theme((
-  color: (
-    primary: mat.define-palette($primary-palette),
-    accent: mat.define-palette($secondary-palette),
-    warn: mat.define-palette(mat.$red-palette),
-  ),
-  typography: mat.define-typography-config(),
-  density: 0,
-));
+$custom-theme: mat.define-dark-theme(
+    (
+        color: (
+            primary: mat.define-palette($primary-palette),
+            accent: mat.define-palette($secondary-palette),
+            warn: mat.define-palette(mat.$red-palette),
+        ),
+        typography: mat.define-typography-config(),
+        density: 0,
+    )
+);
 
 // Apply the dark theme by default
 @include mat.all-component-themes($custom-theme);
 
 // Global styles
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+    height: 100%;
+}
+body {
+    margin: 0;
+    font-family: Roboto, 'Helvetica Neue', sans-serif;
+}
 
 app-root {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }

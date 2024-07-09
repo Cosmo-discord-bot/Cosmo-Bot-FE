@@ -1,21 +1,15 @@
 import { Routes } from '@angular/router';
-import { StatisticsComponent } from './statistics/statistics.component';
-import { CommandsComponent } from './commands/commands.component';
+import { CommandsComponent } from './features/commands/commands.component';
+import { StatisticsModule } from './features/statistics/statistics.module';
 // Import other components as needed
 
 export const routes: Routes = [
     { path: '', redirectTo: '/home', pathMatch: 'full' },
-    { path: 'home', loadComponent: () => import('./home/home.component').then((m) => m.HomeComponent) },
-    { path: 'docs', loadComponent: () => import('./docs/docs.component').then((m) => m.DocsComponent) },
+    { path: 'home', loadComponent: () => import('./features/home/home.component').then((m) => m.HomeComponent) },
+    { path: 'docs', loadComponent: () => import('./features/docs/docs.component').then((m) => m.DocsComponent) },
     {
         path: 'statistics',
-        component: StatisticsComponent,
-        children: [
-            { path: '', redirectTo: 'overview', pathMatch: 'full' },
-            //{ path: 'overview', loadComponent: () => import('./statistics/overview/overview.component').then((m) => m.OverviewComponent) },
-            //{ path: 'users', loadComponent: () => import('./statistics/users/users.component').then((m) => m.UsersComponent) },
-            // Add more subroutes
-        ],
+        loadChildren: () => import('./features/statistics/statistics.module').then((m) => m.StatisticsModule),
     },
     {
         path: 'commands',
@@ -27,6 +21,6 @@ export const routes: Routes = [
             // Add more subroutes
         ],
     },
-    { path: 'profile', loadComponent: () => import('./profile/profile.component').then((m) => m.ProfileComponent) },
+    { path: 'profile', loadComponent: () => import('./features/profile/profile.component').then((m) => m.ProfileComponent) },
     // Add more main routes as needed
 ];
