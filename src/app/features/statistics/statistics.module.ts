@@ -12,10 +12,11 @@ import { CommandsComponent } from './components/commands/commands.component';
 
 // Import feature routing
 import { statisticsRoutes } from './statistics-routing.module';
+import { BaseChartDirective } from 'ng2-charts';
 
 @NgModule({
     declarations: [OverviewComponent, UsersComponent, CommandsComponent],
-    imports: [CommonModule, RouterModule.forChild(statisticsRoutes)],
+    imports: [CommonModule, RouterModule.forChild(statisticsRoutes), BaseChartDirective],
     providers: [],
     exports: [
         // Export components if they need to be used outside this module
