@@ -1,1 +1,12 @@
-<p>overview works!</p>
+<div class="overview-container">
+    <div class="filter-buttons">
+        <button (click)="updateTimeFilter('week')">Week</button>
+        <button (click)="updateTimeFilter('month')">Month</button>
+        <button (click)="updateTimeFilter('year')">Year</button>
+    </div>
+    <canvas baseChart
+            [data]="lineChartData"
+            [options]="lineChartOptions"
+            [type]="lineChartType">
+    </canvas>
+</div>

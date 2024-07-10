@@ -4,7 +4,7 @@
 @include mat.core();
 
 $primary-color: #202328;
-$secondary-color: #101517;
+$secondary-color: #3691d1;
 
 // Define your custom palette
 $primary-palette: (
@@ -84,12 +84,27 @@ body {
     font-family:Arial, 'Helvetica Neue', sans-serif;
 }
 
-app-navbar {
-    font-family: "Arial", "Helvetica Neue", sans-serif;
-}
-
 app-root {
     display: flex;
     flex-direction: column;
     height: 100%;
+}
+
+app-navbar {
+    font-family: "Arial", "Helvetica Neue", sans-serif;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 64px; // Adjust this value based on your navbar height
+    z-index: 1000;
+}
+// TODO - Check the navbar height and adjust the top value accordingly
+app-sidebar {
+    position: fixed;
+    top: 64px; // Should match the navbar height
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    overflow-y: auto; // Allow scrolling if sidebar content is too long
 }
