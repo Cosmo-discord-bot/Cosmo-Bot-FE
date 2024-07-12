@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ChartConfiguration, ChartType } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 import 'chartjs-adapter-date-fns';
+import { GraphDataService } from '../../services/graph-data.service'; // Update this path
 
 @Component({
     selector: 'app-overview',
@@ -15,7 +16,7 @@ export class OverviewComponent implements OnInit {
         datasets: [
             {
                 data: [],
-                label: 'Linear Function',
+                label: 'Message Count',
                 backgroundColor: 'rgba(75,192,192,0.4)',
                 borderColor: 'rgba(75,192,192,1)',
                 pointBackgroundColor: 'rgba(75,192,192,1)',
@@ -50,54 +51,45 @@ export class OverviewComponent implements OnInit {
 
     timeFilter: string = 'month';
 
-    constructor() {}
+    constructor(private graphDataService: GraphDataService) {}
 
     ngOnInit(): void {
         this.updateTimeFilter('month');
     }
 
-    generateData(startDate: Date, endDate: Date): { x: number; y: number }[] {
-        const data = [];
-        const daysDiff = (endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24);
-
-        for (let i = 0; i <= daysDiff; i++) {
-            const date = new Date(startDate.getTime() + i * 24 * 60 * 60 * 1000);
-            const value = i * 2; // Linear function: f(x) = 2x
-            data.push({ x: date.getTime(), y: value });
-        }
-
-        return data;
-    }
-
     updateTimeFilter(filter: string): void {
         this.timeFilter = filter;
-        const endDate = new Date();
-        let startDate: Date;
+        let days: string;
 
         switch (filter) {
             case 'week':
-                startDate = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate() - 7);
+                days = '7';
                 break;
             case 'month':
-                startDate = new Date(endDate.getFullYear(), endDate.getMonth() - 1, endDate.getDate());
+                days = '30';
                 break;
             case 'year':
-                startDate = new Date(endDate.getFullYear() - 1, endDate.getMonth(), endDate.getDate());
+                days = '365';
                 break;
             default:
-                startDate = new Date(endDate.getFullYear(), endDate.getMonth() - 1, endDate.getDate());
+                days = '30';
         }
 
-        const newData = this.generateData(startDate, endDate);
+        this.graphDataService.getLineChartData(days).subscribe({
+            next: (data) => {
+                if (this.lineChartData.datasets) {
+                    this.lineChartData.datasets[0].data = data;
+                }
+                this.lineChartData.labels = data.map((item: any) => item.x);
 
-        if (this.lineChartData.datasets) {
-            this.lineChartData.datasets[0].data = newData;
-        }
-
-        this.lineChartData.labels = newData.map((item) => new Date(item.x));
-
-        if (this.chart) {
-            this.chart.chart?.update();
-        }
+                if (this.chart) {
+                    this.chart.chart?.update();
+                }
+            },
+            error: (error) => {
+                console.error('Error fetching chart data:', error);
+                // Handle error (e.g., show an error message to the user)
+            },
+        });
     }
 }
