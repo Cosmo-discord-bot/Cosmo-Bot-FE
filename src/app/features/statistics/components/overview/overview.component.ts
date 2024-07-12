@@ -8,6 +8,7 @@ import { GraphDataService } from '../../services/graph-data.service'; // Update 
     selector: 'app-overview',
     templateUrl: './overview.component.html',
     styleUrls: ['./overview.component.scss'],
+    providers: [GraphDataService],
 })
 export class OverviewComponent implements OnInit {
     @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
@@ -47,7 +48,7 @@ export class OverviewComponent implements OnInit {
         },
     };
 
-    public lineChartType: ChartType = 'line';
+    public lineChartType: ChartType = 'bar';
 
     timeFilter: string = 'month';
 

@@ -4,9 +4,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '@env/environment';
 
-@Injectable({
-    providedIn: 'root',
-})
+@Injectable()
 export class GraphDataService {
     constructor(private http: HttpClient) {}
 
