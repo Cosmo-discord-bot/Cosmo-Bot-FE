@@ -1,0 +1,25 @@
+<div class="chart-container">
+    <canvas baseChart
+            [data]="chartData"
+            [options]="chartOptions"
+            [type]="chartType">
+    </canvas>
+</div>
+
+<div class="table-container">
+    <h2>Top 10 Users</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>User Name</th>
+            <th>Message Count</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let user of topUsers">
+            <td>{{ user.name }}</td>
+            <td>{{ user.count }}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
