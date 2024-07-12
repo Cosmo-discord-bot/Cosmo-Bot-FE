@@ -1,0 +1,12 @@
+<div class="overview-container" id="messages-per-day-chart">
+    <div class="filter-buttons">
+        <button (click)="updateTimeFilter('week')">Week</button>
+        <button (click)="updateTimeFilter('month')">Month</button>
+        <button (click)="updateTimeFilter('year')">Year</button>
+    </div>
+    <canvas baseChart
+            [data]="chartData"
+            [options]="chartOptions"
+            [type]="chartType">
+    </canvas>
+</div>

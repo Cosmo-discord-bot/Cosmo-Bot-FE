@@ -1,3 +1,6 @@
+$statistics-background-color: #202328;
+$statistics-border-radius: 10px;
+
 #messages-charts-wrapper{
     display: flex;
     height: 100vh;
@@ -16,11 +19,11 @@
         border-radius: 10px;
     }
     app-messages-per-day {
+        padding: 2rem;
+        margin-top: 2rem;
         display: flex;
         justify-content: center;
-        background-color: #202328;
-        border-radius: 10px;
-        padding: 2rem;
-        margin: 2rem 0 0 0;
+        background-color: $statistics-background-color;
+        border-radius: $statistics-border-radius;
     }
 }
