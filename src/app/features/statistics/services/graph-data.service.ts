@@ -9,10 +9,10 @@ export class GraphDataService {
     constructor(private http: HttpClient) {}
 
     // TODO: Replace with actual guild ID
-    private guildId = '985931954753007616';
+    private guildId = '286049248838156290';
 
-    getLineChartData(days: string): Observable<any> {
-        return this.http.get<{ [key: string]: number }>(`${environment.apiUrl}/statistics/${this.guildId}/channels/?days=${days}`).pipe(
+    getPerDayChartData(days: string): Observable<any> {
+        return this.http.get<{ [key: string]: number }>(`${environment.apiUrl}/statistics/${this.guildId}/messages/perDay?days=${days}`).pipe(
             map((response: { [key: string]: number }) => {
                 return Object.keys(response).map((date) => ({
                     x: new Date(date),
@@ -20,5 +20,31 @@ export class GraphDataService {
                 }));
             })
         );
+    }
+
+    getPerChannelChartData(days: string): Observable<any> {
+        return this.http
+            .get<{ [key: string]: { name: string; count: number } }>(`${environment.apiUrl}/statistics/${this.guildId}/messages/perChannel?days=${days}`)
+            .pipe(
+                map((response) => {
+                    return Object.values(response).map((channel: { name: string; count: number }) => ({
+                        name: channel.name,
+                        count: channel.count,
+                    }));
+                })
+            );
+    }
+
+    getPerUserChartData(days: string): Observable<any> {
+        return this.http
+            .get<{ [key: string]: { name: string; count: number } }>(`${environment.apiUrl}/statistics/${this.guildId}/messages/perUser?days=${days}`)
+            .pipe(
+                map((response) => {
+                    return Object.values(response).map((channel: { name: string; count: number }) => ({
+                        name: channel.name,
+                        count: channel.count,
+                    }));
+                })
+            );
     }
 }
