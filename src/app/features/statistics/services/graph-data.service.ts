@@ -9,7 +9,7 @@ export class GraphDataService {
     constructor(private http: HttpClient) {}
 
     // TODO: Replace with actual guild ID
-    private guildId = '286049248838156290';
+    private guildId = environment.discordGuildId;
 
     getPerDayChartData(days: string): Observable<any> {
         return this.http.get<{ [key: string]: number }>(`${environment.apiUrl}/statistics/${this.guildId}/messages/perDay?days=${days}`).pipe(
