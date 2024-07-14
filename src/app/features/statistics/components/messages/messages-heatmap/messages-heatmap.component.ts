@@ -1,8 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { GraphDataService } from '../../../services/graph-data.service';
 import { CommonModule } from '@angular/common';
-import { Chart, ChartConfiguration, ChartType } from 'chart.js';
+import { ChartConfiguration, ChartType } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
+
 interface ChartData {
     [dayOfWeek: string]: {
         [hour: string]: number;
@@ -41,7 +42,7 @@ export class MessagesHeatmapComponent implements OnInit {
                 max: 6.5,
                 ticks: {
                     stepSize: 1,
-                    callback: (value) => ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][value],
+                    //callback: (value) => ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][value],
                 },
             },
             y: {
