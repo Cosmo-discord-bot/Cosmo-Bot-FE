@@ -38,6 +38,9 @@ importers:
             '@angular/router':
                 specifier: ^18.1.0
                 version: 18.1.0(@angular/common@18.1.0(@angular/core@18.1.0(rxjs@7.8.1)(zone.js@0.14.7))(rxjs@7.8.1))(@angular/core@18.1.0(rxjs@7.8.1)(zone.js@0.14.7))(@angular/platform-browser@18.1.0(@angular/animations@18.1.0(@angular/core@18.1.0(rxjs@7.8.1)(zone.js@0.14.7)))(@angular/common@18.1.0(@angular/core@18.1.0(rxjs@7.8.1)(zone.js@0.14.7))(rxjs@7.8.1))(@angular/core@18.1.0(rxjs@7.8.1)(zone.js@0.14.7)))(rxjs@7.8.1)
+            apexcharts:
+                specifier: ^3.50.0
+                version: 3.50.0
             chart.js:
                 specifier: ^4.4.3
                 version: 4.4.3
@@ -50,6 +53,9 @@ importers:
             date-fns:
                 specifier: ^3.6.0
                 version: 3.6.0
+            ng-apexcharts:
+                specifier: ^1.11.0
+                version: 1.11.0(@angular/common@18.1.0(@angular/core@18.1.0(rxjs@7.8.1)(zone.js@0.14.7))(rxjs@7.8.1))(@angular/core@18.1.0(rxjs@7.8.1)(zone.js@0.14.7))(apexcharts@3.50.0)(rxjs@7.8.1)
             ng2-charts:
                 specifier: ^6.0.1
                 version: 6.0.1(@angular/cdk@17.3.10(@angular/common@18.1.0(@angular/core@18.1.0(rxjs@7.8.1)(zone.js@0.14.7))(rxjs@7.8.1))(@angular/core@18.1.0(rxjs@7.8.1)(zone.js@0.14.7))(rxjs@7.8.1))(@angular/common@18.1.0(@angular/core@18.1.0(rxjs@7.8.1)(zone.js@0.14.7))(rxjs@7.8.1))(@angular/core@18.1.0(rxjs@7.8.1)(zone.js@0.14.7))(@angular/platform-browser@18.1.0(@angular/animations@18.1.0(@angular/core@18.1.0(rxjs@7.8.1)(zone.js@0.14.7)))(@angular/common@18.1.0(@angular/core@18.1.0(rxjs@7.8.1)(zone.js@0.14.7))(rxjs@7.8.1))(@angular/core@18.1.0(rxjs@7.8.1)(zone.js@0.14.7)))(chart.js@4.4.3)(rxjs@7.8.1)
@@ -1764,6 +1770,9 @@ packages:
     '@yarnpkg/lockfile@1.1.0':
         resolution: { integrity: sha512-GpSwvyXOcOOlV70vbnzjj4fW5xW/FdUF6nQEt1ENy7m4ZCczi1+/buVUPAqmGfqznsORNFzUMjctTIp8a9tuCQ== }
 
+    '@yr/monotone-cubic-spline@1.0.3':
+        resolution: { integrity: sha512-FQXkOta0XBSUPHndIKON2Y9JeQz5ZeMqLYZVVK93FliNBFm7LNMIZmY6FrMEB9XPcDbE2bekMbZD6kzDkxwYjA== }
+
     abbrev@2.0.0:
         resolution: { integrity: sha512-6/mh1E2u2YgEsCHdY0Yx5oW+61gZU+1vXaoiHHrpKeuRNNgFvS+/jrwHiQhB5apAf5oB7UB7E19ol2R2LKH8hQ== }
         engines: { node: ^14.17.0 || ^16.13.0 || >=18.0.0 }
@@ -1869,6 +1878,9 @@ packages:
     anymatch@3.1.3:
         resolution: { integrity: sha512-KMReFUr0B4t+D+OBkjR3KYqvocp2XaSzO55UcB6mgQMd3KbcE+mWTyvVV7D/zsdEbNnV6acZUutkiHQXvTr1Rw== }
         engines: { node: '>= 8' }
+
+    apexcharts@3.50.0:
+        resolution: { integrity: sha512-LJT1PNAm+NoIU3aogL2P+ViC0y/Cjik54FdzzGV54UNnGQLBoLe5ok3fxsJDTgyez45BGYT8gqNpYKqhdfy5sg== }
 
     argparse@2.0.1:
         resolution: { integrity: sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q== }
@@ -3213,6 +3225,14 @@ packages:
     neo-async@2.6.2:
         resolution: { integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw== }
 
+    ng-apexcharts@1.11.0:
+        resolution: { integrity: sha512-bzZ2qMYpJJ1V/Yfp9eC5y7BuxrlZx4fc9ev9pNHW8qEs5B0yE5yW25WrLhoGTYsfeFZfiADWeAmZkceEiihpFw== }
+        peerDependencies:
+            '@angular/common': ^18.0.1
+            '@angular/core': ^18.0.1
+            apexcharts: ^3.49.1
+            rxjs: ^6.5.5 || ^7.4.0
+
     ng2-charts@6.0.1:
         resolution: { integrity: sha512-pO7evbvHqjiKB7zqE12tCKWQI9gmQ8DVOEaWBBLlxJabc4fLGk7o9t4jC4+Q9pJiQrTtQkugm0dIPQ4PFHUaWA== }
         peerDependencies:
@@ -3938,6 +3958,37 @@ packages:
     supports-preserve-symlinks-flag@1.0.0:
         resolution: { integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w== }
         engines: { node: '>= 0.4' }
+
+    svg.draggable.js@2.2.2:
+        resolution: { integrity: sha512-JzNHBc2fLQMzYCZ90KZHN2ohXL0BQJGQimK1kGk6AvSeibuKcIdDX9Kr0dT9+UJ5O8nYA0RB839Lhvk4CY4MZw== }
+        engines: { node: '>= 0.8.0' }
+
+    svg.easing.js@2.0.0:
+        resolution: { integrity: sha512-//ctPdJMGy22YoYGV+3HEfHbm6/69LJUTAqI2/5qBvaNHZ9uUFVC82B0Pl299HzgH13rKrBgi4+XyXXyVWWthA== }
+        engines: { node: '>= 0.8.0' }
+
+    svg.filter.js@2.0.2:
+        resolution: { integrity: sha512-xkGBwU+dKBzqg5PtilaTb0EYPqPfJ9Q6saVldX+5vCRy31P6TlRCP3U9NxH3HEufkKkpNgdTLBJnmhDHeTqAkw== }
+        engines: { node: '>= 0.8.0' }
+
+    svg.js@2.7.1:
+        resolution: { integrity: sha512-ycbxpizEQktk3FYvn/8BH+6/EuWXg7ZpQREJvgacqn46gIddG24tNNe4Son6omdXCnSOaApnpZw6MPCBA1dODA== }
+
+    svg.pathmorphing.js@0.1.3:
+        resolution: { integrity: sha512-49HWI9X4XQR/JG1qXkSDV8xViuTLIWm/B/7YuQELV5KMOPtXjiwH4XPJvr/ghEDibmLQ9Oc22dpWpG0vUDDNww== }
+        engines: { node: '>= 0.8.0' }
+
+    svg.resize.js@1.4.3:
+        resolution: { integrity: sha512-9k5sXJuPKp+mVzXNvxz7U0uC9oVMQrrf7cFsETznzUDDm0x8+77dtZkWdMfRlmbkEEYvUn9btKuZ3n41oNA+uw== }
+        engines: { node: '>= 0.8.0' }
+
+    svg.select.js@2.1.2:
+        resolution: { integrity: sha512-tH6ABEyJsAOVAhwcCjF8mw4crjXSI1aa7j2VQR8ZuJ37H2MBUbyeqYr5nEO7sSN3cy9AR9DUwNg0t/962HlDbQ== }
+        engines: { node: '>= 0.8.0' }
+
+    svg.select.js@3.0.1:
+        resolution: { integrity: sha512-h5IS/hKkuVCbKSieR9uQCj9w+zLHoPh+ce19bBYyqF53g6mnPB8sAtIbe1s9dh2S2fCmYX2xel1Ln3PJBbK4kw== }
+        engines: { node: '>= 0.8.0' }
 
     symbol-observable@4.0.0:
         resolution: { integrity: sha512-b19dMThMV4HVFynSAM1++gBHAbk2Tc/osgLIBZMKsyqh34jb2e8Os7T6ZW/Bt3pJFdBTd2JwAnAAEQV7rSNvcQ== }
@@ -6713,6 +6764,8 @@ snapshots:
 
     '@yarnpkg/lockfile@1.1.0': { }
 
+    '@yr/monotone-cubic-spline@1.0.3': { }
+
     abbrev@2.0.0: { }
 
     accepts@1.3.8:
@@ -6808,6 +6861,16 @@ snapshots:
         dependencies:
             normalize-path: 3.0.0
             picomatch: 2.3.1
+
+    apexcharts@3.50.0:
+        dependencies:
+            '@yr/monotone-cubic-spline': 1.0.3
+            svg.draggable.js: 2.2.2
+            svg.easing.js: 2.0.0
+            svg.filter.js: 2.0.2
+            svg.pathmorphing.js: 0.1.3
+            svg.resize.js: 1.4.3
+            svg.select.js: 3.0.1
 
     argparse@2.0.1: { }
 
@@ -8261,6 +8324,14 @@ snapshots:
 
     neo-async@2.6.2: { }
 
+    ng-apexcharts@1.11.0(@angular/common@18.1.0(@angular/core@18.1.0(rxjs@7.8.1)(zone.js@0.14.7))(rxjs@7.8.1))(@angular/core@18.1.0(rxjs@7.8.1)(zone.js@0.14.7))(apexcharts@3.50.0)(rxjs@7.8.1):
+        dependencies:
+            '@angular/common': 18.1.0(@angular/core@18.1.0(rxjs@7.8.1)(zone.js@0.14.7))(rxjs@7.8.1)
+            '@angular/core': 18.1.0(rxjs@7.8.1)(zone.js@0.14.7)
+            apexcharts: 3.50.0
+            rxjs: 7.8.1
+            tslib: 2.6.3
+
     ng2-charts@6.0.1(@angular/cdk@17.3.10(@angular/common@18.1.0(@angular/core@18.1.0(rxjs@7.8.1)(zone.js@0.14.7))(rxjs@7.8.1))(@angular/core@18.1.0(rxjs@7.8.1)(zone.js@0.14.7))(rxjs@7.8.1))(@angular/common@18.1.0(@angular/core@18.1.0(rxjs@7.8.1)(zone.js@0.14.7))(rxjs@7.8.1))(@angular/core@18.1.0(rxjs@7.8.1)(zone.js@0.14.7))(@angular/platform-browser@18.1.0(@angular/animations@18.1.0(@angular/core@18.1.0(rxjs@7.8.1)(zone.js@0.14.7)))(@angular/common@18.1.0(@angular/core@18.1.0(rxjs@7.8.1)(zone.js@0.14.7))(rxjs@7.8.1))(@angular/core@18.1.0(rxjs@7.8.1)(zone.js@0.14.7)))(chart.js@4.4.3)(rxjs@7.8.1):
         dependencies:
             '@angular/cdk': 17.3.10(@angular/common@18.1.0(@angular/core@18.1.0(rxjs@7.8.1)(zone.js@0.14.7))(rxjs@7.8.1))(@angular/core@18.1.0(rxjs@7.8.1)(zone.js@0.14.7))(rxjs@7.8.1)
@@ -9092,6 +9163,37 @@ snapshots:
             has-flag: 4.0.0
 
     supports-preserve-symlinks-flag@1.0.0: { }
+
+    svg.draggable.js@2.2.2:
+        dependencies:
+            svg.js: 2.7.1
+
+    svg.easing.js@2.0.0:
+        dependencies:
+            svg.js: 2.7.1
+
+    svg.filter.js@2.0.2:
+        dependencies:
+            svg.js: 2.7.1
+
+    svg.js@2.7.1: { }
+
+    svg.pathmorphing.js@0.1.3:
+        dependencies:
+            svg.js: 2.7.1
+
+    svg.resize.js@1.4.3:
+        dependencies:
+            svg.js: 2.7.1
+            svg.select.js: 2.1.2
+
+    svg.select.js@2.1.2:
+        dependencies:
+            svg.js: 2.7.1
+
+    svg.select.js@3.0.1:
+        dependencies:
+            svg.js: 2.7.1
 
     symbol-observable@4.0.0: { }
 

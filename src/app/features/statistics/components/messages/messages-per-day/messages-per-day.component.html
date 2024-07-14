@@ -4,9 +4,13 @@
         <button (click)="updateTimeFilter('month')">Month</button>
         <button (click)="updateTimeFilter('year')">Year</button>
     </div>
-    <canvas baseChart
-            [data]="chartData"
-            [options]="chartOptions"
-            [type]="chartType">
-    </canvas>
+    <apx-chart
+        [series]="chartOptions?.series || []"
+        [chart]="chartOptions?.chart || {}"
+        [xaxis]="chartOptions?.xaxis || {}"
+        [yaxis]="chartOptions?.yaxis || {}"
+        [dataLabels]="chartOptions?.dataLabels || {}"
+        [title]="chartOptions?.title || {}"
+        [tooltip]="chartOptions?.tooltip || {}">
+    </apx-chart>
 </div>

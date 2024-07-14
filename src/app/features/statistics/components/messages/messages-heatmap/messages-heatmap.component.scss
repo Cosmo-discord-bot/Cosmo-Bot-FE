@@ -1,5 +1,32 @@
 #messages-heatmap-chart{
     margin: auto;
-    height: 40rem;
+    height: fit-content;
     width: 70%;
+}
+
+.apexcharts-tooltip {
+    background: #000 !important;
+    color: #fff !important;
+    border-radius: 5px !important;
+    padding: 5px !important;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1) !important;
+}
+
+
+::ng-deep .custom-tooltip {
+    background: #333;
+    color: #fff;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+::ng-deep .custom-tooltip .tooltip-title {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+::ng-deep .custom-tooltip .tooltip-value {
+    display: block;
 }
