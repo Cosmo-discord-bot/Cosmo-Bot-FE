@@ -1,114 +1,130 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ApexAxisChartSeries, ApexChart, ApexDataLabels, ApexPlotOptions, ApexTooltip, ApexXAxis, ApexYAxis, NgApexchartsModule } from 'ng-apexcharts';
 import { GraphDataService } from '../../../services/graph-data.service';
-import { CommonModule } from '@angular/common';
-import { ChartConfiguration, ChartType } from 'chart.js';
-import { BaseChartDirective } from 'ng2-charts';
 
-interface ChartData {
-    [dayOfWeek: string]: {
-        [hour: string]: number;
-    };
-}
+export type ChartOptions = {
+    series: ApexAxisChartSeries;
+    chart: ApexChart;
+    xaxis: ApexXAxis;
+    plotOptions: ApexPlotOptions;
+    dataLabels: ApexDataLabels;
+    yaxis: ApexYAxis;
+    tooltip: ApexTooltip;
+};
 
 @Component({
     selector: 'app-messages-heatmap',
+    templateUrl: './messages-heatmap.component.html',
+    styleUrls: ['./messages-heatmap.component.scss'],
     providers: [GraphDataService],
     standalone: true,
-    imports: [CommonModule, BaseChartDirective],
-    templateUrl: './messages-heatmap.component.html',
-    styleUrl: './messages-heatmap.component.scss',
+    imports: [NgApexchartsModule],
 })
 export class MessagesHeatmapComponent implements OnInit {
-    @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
-
-    public chartData: ChartConfiguration['data'] = {
-        datasets: [
-            {
-                data: [],
-                backgroundColor: [],
-                hoverBackgroundColor: [],
-            },
-        ],
-    };
-
-    public chartOptions: ChartConfiguration['options'] = {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-            x: {
-                type: 'linear',
-                position: 'bottom',
-                min: -0.5,
-                max: 6.5,
-                ticks: {
-                    stepSize: 1,
-                    //callback: (value) => ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][value],
-                },
-            },
-            y: {
-                type: 'linear',
-                min: -0.5,
-                max: 23.5,
-                ticks: {
-                    stepSize: 1,
-                    callback: (value) => `${value}:00`,
-                },
-            },
-        },
-        plugins: {
-            legend: {
-                display: false,
-            },
-            tooltip: {
-                callbacks: {
-                    title: (context) => {
-                        const day = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][context[0].parsed.x];
-                        const hour = context[0].parsed.y;
-                        return `${day} ${hour}:00`;
-                    },
-                    //label: (context) => `Messages: ${context.raw.v}`,
-                },
-            },
-        },
-    };
-
-    public chartType: ChartType = 'scatter';
+    public chartOptions: Partial<ChartOptions> | any;
 
     constructor(private graphDataService: GraphDataService) {}
 
     ngOnInit() {
         this.graphDataService.getActivityHeatmap('30').subscribe((data) => {
-            this.updateChartData(data);
+            const transformedData = this.transformData(data);
+            this.initChart(transformedData);
         });
     }
 
-    private updateChartData(data: { [dayOfWeek: string]: { [hour: string]: number } }) {
-        const chartData = [];
-        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-        let maxValue = 0;
+    transformData(data: any) {
+        const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+        const series = [];
 
-        for (let x = 0; x < 7; x++) {
-            for (let y = 0; y < 24; y++) {
-                const value = data[days[x]][y.toString()] || 0;
-                maxValue = Math.max(maxValue, value);
-                chartData.push({ x, y, v: value });
+        for (let i = 0; i < 7; i++) {
+            const dataForDay = [];
+            for (let j = 0; j < 24; j++) {
+                dataForDay.push({
+                    x: j,
+                    y: data[days[i]][j.toString()],
+                });
             }
+            series.push({
+                name: days[i],
+                data: dataForDay,
+            });
         }
 
-        this.chartData.datasets[0].data = chartData;
-        this.chartData.datasets[0].backgroundColor = chartData.map((d) => this.getColor(d.v, maxValue, 0.7));
-        this.chartData.datasets[0].hoverBackgroundColor = chartData.map((d) => this.getColor(d.v, maxValue, 1));
-        // this.chartData.datasets[0].pointRadius = 10;
-
-        if (this.chart) {
-            this.chart.chart?.update();
-        }
+        return series;
     }
 
-    private getColor(value: number, maxValue: number, alpha: number): string {
-        const intensity = value / maxValue;
-        const r = Math.round(intensity * 255);
-        const g = Math.round((1 - intensity) * 255);
-        return `rgba(${r}, ${g}, 0, ${alpha})`;
+    initChart(series: { name: string; data: { x: number; y: number }[] }[]) {
+        const maxValue = Math.max(...series.flatMap((day) => day.data.map((point) => point.y)));
+
+        this.chartOptions = {
+            series: series,
+            chart: {
+                type: 'heatmap',
+                height: 350,
+                toolbar: {
+                    show: false,
+                },
+                zoom: {
+                    enabled: false,
+                },
+            },
+            plotOptions: {
+                heatmap: {
+                    enableShades: true,
+                    shadeIntensity: 1,
+                    colorScale: {
+                        ranges: [
+                            { from: 0, to: 0, name: 'No Activity', color: '#e0e0e0' },
+                            { from: 1, to: maxValue, name: 'Activity', color: '#008FFB' },
+                        ],
+                    },
+                },
+            },
+            dataLabels: {
+                enabled: true,
+            },
+            xaxis: {
+                type: 'numeric',
+                title: {
+                    text: 'Hour of the Day',
+                },
+                labels: {
+                    formatter: (val: string) => Math.floor(parseInt(val)).toString(),
+                    show: true,
+                },
+                categories: Array.from({ length: 24 }, (_, i) => i),
+                tooltip: {
+                    enabled: false,
+                },
+            },
+            yaxis: {
+                reversed: true,
+                title: {
+                    text: 'Day of the Week',
+                },
+                labels: {
+                    show: true,
+                },
+            },
+            tooltip: {
+                enabled: true,
+                theme: 'dark',
+                style: {
+                    fontSize: '12px',
+                    fontFamily: 'Helvetica, Arial, sans-serif',
+                },
+            },
+            legend: {
+                show: false, // Disable the legend
+            },
+            title: {
+                text: 'Messages Heatmap',
+                align: 'center',
+                style: {
+                    fontSize: '16px',
+                    color: '#fff',
+                },
+            },
+        };
     }
 }

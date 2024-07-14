@@ -1,3 +1,10 @@
 <div id="messages-heatmap-chart">
-    <canvas baseChart [data]="chartData" [options]="chartOptions" [type]="chartType"></canvas>
+    <apx-chart
+        [series]="chartOptions.series!"
+        [chart]="chartOptions.chart!"
+        [xaxis]="chartOptions.xaxis!"
+        [yaxis]="chartOptions.yaxis!"
+        [plotOptions]="chartOptions.plotOptions!"
+        [dataLabels]="chartOptions.dataLabels!">
+    </apx-chart>
 </div>

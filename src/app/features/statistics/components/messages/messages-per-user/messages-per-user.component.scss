@@ -7,18 +7,22 @@
 
 .chart-container {
     margin-top: 2rem;
+    height: 80%;
+    width: 40%;
 }
 
 .table-container {
+    width: 40%;
     margin-top: 20px;
     text-align: center;
+    color: #202328;
 
     table {
         width: 100%;
         border-collapse: collapse;
 
         th, td {
-            border: 1px solid #ddd;
+            border: 1px solid rgba(32, 35, 40, 0.47);;
             padding: 1rem 5rem;
         }
 

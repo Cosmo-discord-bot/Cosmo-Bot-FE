@@ -1,56 +1,27 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { ChartConfiguration, ChartType } from 'chart.js';
+import { Component, OnInit } from '@angular/core';
+import { ApexAxisChartSeries, ApexChart, ApexDataLabels, ApexTitleSubtitle, ApexTooltip, ApexXAxis, ApexYAxis, NgApexchartsModule } from 'ng-apexcharts';
 import { GraphDataService } from '../../../services/graph-data.service';
-import { BaseChartDirective } from 'ng2-charts';
+
+export type ChartOptions = {
+    series: ApexAxisChartSeries;
+    chart: ApexChart;
+    xaxis: ApexXAxis;
+    yaxis: ApexYAxis;
+    dataLabels: ApexDataLabels;
+    title: ApexTitleSubtitle;
+    tooltip: ApexTooltip;
+};
 
 @Component({
     selector: 'app-messages-per-day',
     standalone: true,
-    imports: [BaseChartDirective],
     providers: [GraphDataService],
     templateUrl: './messages-per-day.component.html',
     styleUrl: './messages-per-day.component.scss',
+    imports: [NgApexchartsModule],
 })
 export class MessagesPerDayComponent implements OnInit {
-    @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
-
-    public chartData: ChartConfiguration['data'] = {
-        datasets: [
-            {
-                data: [],
-                label: 'Message Count',
-                //backgroundColor: 'rgba(75,192,192,0.4)',
-                backgroundColor: 'rgba(75,192,192,0.4)',
-                borderColor: 'rgba(75,192,192,1)',
-                pointBackgroundColor: 'rgba(75,192,192,1)',
-                pointBorderColor: '#fff',
-                pointHoverBackgroundColor: '#fff',
-                pointHoverBorderColor: 'rgba(75,192,192,0.8)',
-                fill: 'origin',
-            },
-        ],
-        labels: [],
-    };
-
-    public chartOptions: ChartConfiguration['options'] = {
-        responsive: true,
-        scales: {
-            x: {
-                type: 'time',
-                time: {
-                    unit: 'day',
-                },
-            },
-            y: {
-                beginAtZero: true,
-            },
-        },
-        plugins: {
-            legend: { display: true },
-        },
-    };
-
-    public chartType: ChartType = 'bar';
+    public chartOptions!: Partial<ChartOptions> | any;
 
     timeFilter: string = 'month';
 
@@ -80,29 +51,55 @@ export class MessagesPerDayComponent implements OnInit {
 
         this.graphDataService.getPerDayChartData(days).subscribe({
             next: (data) => {
-                if (this.chartData.datasets) {
-                    this.chartData.datasets[0].data = data;
-                }
-                this.chartData.labels = data.map((item: any) => item.x);
-
-                if (this.chart) {
-                    this.chart.chart?.update();
-                }
+                const seriesData = data.map((item: any) => ({ x: item.x, y: item.y }));
+                this.initChart(seriesData);
             },
             error: (error) => {
                 console.error('Error fetching chart data:', error);
             },
         });
     }
-}
-/*
-        TODO:
-        - Messages for 30 days with filter for more - max 365 days
-        - Messages per channel
-        - Messages per user
-        - Heatmap - how many messages-per-day each hour of the day
-        - Top 10 users by messages-per-day - pie chart with percentage
-        - Top 10 channels by messages-per-day - pie chart with percentage
 
-        - Average?
-     */
+    private initChart(data: any) {
+        this.chartOptions = {
+            series: [
+                {
+                    name: 'Message Count',
+                    data: data,
+                },
+            ],
+            chart: {
+                type: 'bar',
+                height: 350,
+                toolbar: {
+                    show: false, // Disable the toolbar
+                },
+            },
+            xaxis: {
+                type: 'datetime',
+                title: {
+                    text: 'Date',
+                },
+            },
+            yaxis: {
+                title: {
+                    text: 'Message Count',
+                },
+                min: 0,
+            },
+            dataLabels: {
+                enabled: false,
+            },
+            title: {
+                text: 'Messages Per Day',
+                align: 'center',
+            },
+            tooltip: {
+                x: {
+                    format: 'dd MMM yyyy',
+                    color: '#000000',
+                },
+            },
+        };
+    }
+}

@@ -1,47 +1,42 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { BaseChartDirective } from 'ng2-charts';
-import { ChartConfiguration, ChartType } from 'chart.js';
+import { Component, OnInit } from '@angular/core';
+import {
+    ApexAxisChartSeries,
+    ApexChart,
+    ApexDataLabels,
+    ApexLegend,
+    ApexPlotOptions,
+    ApexTitleSubtitle,
+    ApexXAxis,
+    ApexYAxis,
+    NgApexchartsModule,
+} from 'ng-apexcharts';
 import { GraphDataService } from '../../../services/graph-data.service';
 import { CommonModule } from '@angular/common';
 
-interface IChartData {
-    name: string;
-    count: number;
-}
+export type ChartOptions = {
+    series: ApexAxisChartSeries;
+    chart: ApexChart;
+    xaxis: ApexXAxis;
+    yaxis: ApexYAxis;
+    dataLabels: ApexDataLabels;
+    title: ApexTitleSubtitle;
+    legend: ApexLegend;
+    plotOptions: ApexPlotOptions;
+    labels: any;
+};
 
 @Component({
     selector: 'app-messages-per-user',
     providers: [GraphDataService],
-    imports: [BaseChartDirective, CommonModule],
     templateUrl: './messages-per-user.component.html',
     styleUrls: ['./messages-per-user.component.scss'],
     standalone: true,
+    imports: [NgApexchartsModule, CommonModule],
 })
 export class MessagesPerUserComponent implements OnInit {
-    @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
-
-    public chartData: ChartConfiguration['data'] = {
-        datasets: [
-            {
-                data: [],
-                label: 'Message Count',
-                backgroundColor: [],
-            },
-        ],
-        labels: [],
-    };
-
-    public chartOptions: ChartConfiguration['options'] = {
-        responsive: true,
-        plugins: {
-            legend: { display: true },
-        },
-    };
-
-    public chartType: ChartType = 'pie';
+    public chartOptions: Partial<ChartOptions> | any;
 
     topUsers: { name: string; count: number }[] = [];
-
     timeFilter: string = 'month';
 
     constructor(private graphDataService: GraphDataService) {}
@@ -75,31 +70,43 @@ export class MessagesPerUserComponent implements OnInit {
                     count: user.count,
                 }));
 
-                this.topUsers = users.sort((a: IChartData, b: IChartData) => b.count - a.count).slice(0, 10);
+                this.topUsers = users.sort((a: any, b: any) => b.count - a.count).slice(0, 10);
 
-                this.chartData.datasets[0].data = users.map((user: IChartData) => user.count);
-                this.chartData.labels = users.map((user: IChartData) => user.name);
-                const colors = this.generateContrastingColors(120, users.length);
-                this.chartData.datasets[0].backgroundColor = users.map((_: IChartData, i: number) => colors[i]);
+                const seriesData = users.map((user: any) => user.count);
+                const labels = users.map((user: any) => user.name);
 
-                if (this.chart) {
-                    this.chart.chart?.update();
-                }
+                this.chartOptions = {
+                    series: seriesData,
+                    chart: {
+                        type: 'pie',
+                        height: '425',
+                        toolbar: {
+                            show: false,
+                        },
+                    },
+                    labels: labels,
+                    dataLabels: {
+                        enabled: true,
+                    },
+                    title: {
+                        text: 'Top 10 Users by Message Count',
+                        align: 'center',
+                    },
+                    legend: {
+                        position: 'bottom',
+                    },
+                    plotOptions: {
+                        pie: {
+                            dataLabels: {
+                                offset: -5,
+                            },
+                        },
+                    },
+                };
             },
             error: (error) => {
                 console.error('Error fetching chart data:', error);
             },
         });
-    }
-
-    private generateContrastingColors(baseHue: number, numberOfColors: number): string[] {
-        const colors = [];
-        const step = Math.floor(360 / numberOfColors); // Dynamic step size
-
-        for (let i = 0; i < numberOfColors; i++) {
-            const hue = (baseHue + i * step) % 360;
-            colors.push(`hsl(${hue}, 50%, 50%)`);
-        }
-        return colors;
     }
 }
