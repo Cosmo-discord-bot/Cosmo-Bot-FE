@@ -1,9 +1,11 @@
-$statistics-background-color: #202328;
+// $statistics-background-color: #202328;
+$statistics-background-color: #DFE0E1;
 $statistics-border-radius: 10px;
 
 #messages-charts-wrapper{
     display: flex;
     margin: auto;
+    //justify-items: center;
     width: 80%;
     flex-direction: column;
     justify-content: center;
@@ -33,6 +35,14 @@ $statistics-border-radius: 10px;
         display: flex;
         justify-content: space-evenly;
         align-items: center;
+        background-color: $statistics-background-color;
+        border-radius: $statistics-border-radius;
+    }
+
+    app-messages-heatmap {
+        padding: 2rem;
+        margin-top: 2rem;
+        height: fit-content;
         background-color: $statistics-background-color;
         border-radius: $statistics-border-radius;
     }

@@ -47,4 +47,10 @@ export class GraphDataService {
                 })
             );
     }
+
+    getActivityHeatmap(days: string): Observable<any> {
+        return this.http.get<{ [dayOfWeek: string]: { [hour: string]: number } }>(
+            `${environment.apiUrl}/statistics/${this.guildId}/messages/heatmap?days=${days}`
+        );
+    }
 }
