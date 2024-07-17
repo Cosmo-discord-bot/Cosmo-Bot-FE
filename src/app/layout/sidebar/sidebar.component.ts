@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, NavigationEnd, RouterModule } from '@angular/router';
+import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { filter, map } from 'rxjs/operators';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -16,7 +16,7 @@ export class SidebarComponent implements OnInit {
     currentRoute: string = '';
     sidebarItems: { [key: string]: string[] } = {
         home: ['TODO'],
-        statistics: ['Overview', 'Users', 'Commands', 'Messages'],
+        statistics: ['Overview', 'Users', 'Voice', 'Messages'],
         // TODO: Get commands from API
         commands: ['Overview', 'Music', 'Settings'],
         docs: ['API'],

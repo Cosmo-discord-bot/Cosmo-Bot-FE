@@ -13,14 +13,14 @@ export type ChartOptions = {
 };
 
 @Component({
-    selector: 'app-messages-heatmap',
-    templateUrl: './messages-heatmap.component.html',
-    styleUrls: ['./messages-heatmap.component.scss'],
+    selector: 'app-voice-heatmap',
+    templateUrl: './voice-heatmap.component.html',
+    styleUrls: ['./voice-heatmap.component.scss'],
     providers: [GraphDataService],
     standalone: true,
     imports: [NgApexchartsModule],
 })
-export class MessagesHeatmapComponent implements OnInit {
+export class VoiceHeatmapComponent implements OnInit {
     public chartOptions: Partial<ChartOptions> | any;
 
     constructor(private graphDataService: GraphDataService) {}
