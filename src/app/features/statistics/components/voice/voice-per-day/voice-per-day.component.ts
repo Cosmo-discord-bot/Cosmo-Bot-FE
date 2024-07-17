@@ -13,14 +13,14 @@ export type ChartOptions = {
 };
 
 @Component({
-    selector: 'app-messages-per-day',
+    selector: 'app-voice-per-day',
     standalone: true,
     providers: [GraphDataService],
-    templateUrl: './messages-per-day.component.html',
-    styleUrl: './messages-per-day.component.scss',
+    templateUrl: './voice-per-day.component.html',
+    styleUrl: './voice-per-day.component.scss',
     imports: [NgApexchartsModule],
 })
-export class MessagesPerDayComponent implements OnInit {
+export class VoicePerDayComponent implements OnInit {
     public chartOptions!: Partial<ChartOptions> | any;
 
     timeFilter: string = 'month';
@@ -49,22 +49,29 @@ export class MessagesPerDayComponent implements OnInit {
                 days = '30';
         }
 
-        this.graphDataService.getMessagesPerDayChartData(days).subscribe({
-            next: (data) => {
-                const seriesData = data.map((item: any) => ({ x: item.x, y: item.y }));
-                this.initChart(seriesData);
-            },
-            error: (error) => {
-                console.error('Error fetching chart data:', error);
-            },
+        this.graphDataService.getVoicePerChannelChartData(days).subscribe((data) => {
+            const processedData = this.processChartData(data);
+            this.initChart(processedData);
         });
     }
 
-    private initChart(data: any) {
+    private processChartData(data: { date: string; userData: { [userId: string]: number } }[]): {
+        x: number;
+        y: number;
+    }[] {
+        return data
+            .map((item) => ({
+                x: new Date(item.date).getTime(),
+                y: Object.values(item.userData).reduce((sum: number, hours: number) => sum + hours, 0),
+            }))
+            .sort((a, b) => a.x - b.x); // Sort by date
+    }
+
+    private initChart(data: { x: number; y: number }[]) {
         this.chartOptions = {
             series: [
                 {
-                    name: 'Message Count',
+                    name: 'Total Voice Hours',
                     data: data,
                 },
             ],
@@ -72,7 +79,7 @@ export class MessagesPerDayComponent implements OnInit {
                 type: 'bar',
                 height: 350,
                 toolbar: {
-                    show: false, // Disable the toolbar
+                    show: false,
                 },
             },
             xaxis: {
@@ -83,7 +90,7 @@ export class MessagesPerDayComponent implements OnInit {
             },
             yaxis: {
                 title: {
-                    text: 'Message Count',
+                    text: 'Total Voice Hours',
                 },
                 min: 0,
             },
@@ -91,13 +98,17 @@ export class MessagesPerDayComponent implements OnInit {
                 enabled: false,
             },
             title: {
-                text: 'Messages Per Day',
+                text: 'Voice Activity Per Day',
                 align: 'center',
             },
             tooltip: {
                 x: {
                     format: 'dd MMM yyyy',
-                    color: '#000000',
+                },
+                y: {
+                    formatter: function (value: number) {
+                        return value.toFixed(2) + ' hours';
+                    },
                 },
             },
         };

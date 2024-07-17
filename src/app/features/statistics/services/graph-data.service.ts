@@ -11,7 +11,7 @@ export class GraphDataService {
     // TODO: Replace with actual guild ID
     private guildId = environment.discordGuildId;
 
-    getPerDayChartData(days: string): Observable<any> {
+    getMessagesPerDayChartData(days: string): Observable<any> {
         return this.http.get<{ [key: string]: number }>(`${environment.apiUrl}/statistics/${this.guildId}/messages/perDay?days=${days}`).pipe(
             map((response: { [key: string]: number }) => {
                 return Object.keys(response).map((date) => ({
@@ -22,7 +22,7 @@ export class GraphDataService {
         );
     }
 
-    getPerChannelChartData(days: string): Observable<any> {
+    getMessagesPerChannelChartData(days: string): Observable<any> {
         return this.http
             .get<{ [key: string]: { name: string; count: number } }>(`${environment.apiUrl}/statistics/${this.guildId}/messages/perChannel?days=${days}`)
             .pipe(
@@ -35,7 +35,7 @@ export class GraphDataService {
             );
     }
 
-    getPerUserChartData(days: string): Observable<any> {
+    getMessagesPerUserChartData(days: string): Observable<any> {
         return this.http
             .get<{ [key: string]: { name: string; count: number } }>(`${environment.apiUrl}/statistics/${this.guildId}/messages/perUser?days=${days}`)
             .pipe(
@@ -48,9 +48,24 @@ export class GraphDataService {
             );
     }
 
-    getActivityHeatmap(days: string): Observable<any> {
+    getMessagesActivityHeatmap(days: string): Observable<any> {
         return this.http.get<{ [dayOfWeek: string]: { [hour: string]: number } }>(
             `${environment.apiUrl}/statistics/${this.guildId}/messages/heatmap?days=${days}`
         );
+    }
+
+    getVoicePerChannelChartData(days: string): Observable<any> {
+        return this.http
+            .get<{
+                [date: string]: { [userId: string]: number };
+            }>(`${environment.apiUrl}/statistics/${this.guildId}/voice/activity?days=${days}`)
+            .pipe(
+                map((response) => {
+                    return Object.entries(response).map(([date, userData]) => ({
+                        date,
+                        userData,
+                    }));
+                })
+            );
     }
 }

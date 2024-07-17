@@ -5,8 +5,6 @@ import { BaseChartDirective } from 'ng2-charts';
 import 'chartjs-adapter-date-fns';
 
 // Import components
-import { OverviewComponent } from './components/overview/overview.component';
-import { UsersComponent } from './components/users/users.component';
 import { CommandsComponent } from './components/commands/commands.component';
 
 // Import services
@@ -15,7 +13,7 @@ import { statisticsRoutes } from './statistics-routing.module';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 @NgModule({
-    declarations: [OverviewComponent, UsersComponent, CommandsComponent],
+    declarations: [CommandsComponent],
     exports: [
         // Export components if they need to be used outside this module
         // OverviewComponent,

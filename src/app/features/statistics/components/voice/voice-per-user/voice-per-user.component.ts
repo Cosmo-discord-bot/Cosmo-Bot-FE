@@ -1,34 +1,42 @@
 import { Component, OnInit } from '@angular/core';
-import { ApexChart, ApexDataLabels, ApexLegend, ApexNonAxisChartSeries, NgApexchartsModule } from 'ng-apexcharts';
+import {
+    ApexAxisChartSeries,
+    ApexChart,
+    ApexDataLabels,
+    ApexLegend,
+    ApexPlotOptions,
+    ApexTitleSubtitle,
+    ApexXAxis,
+    ApexYAxis,
+    NgApexchartsModule,
+} from 'ng-apexcharts';
 import { GraphDataService } from '../../../services/graph-data.service';
 import { CommonModule } from '@angular/common';
 
-interface IChartData {
-    name: string;
-    count: number;
-}
-
 export type ChartOptions = {
-    series: ApexNonAxisChartSeries;
+    series: ApexAxisChartSeries;
     chart: ApexChart;
-    labels: any;
+    xaxis: ApexXAxis;
+    yaxis: ApexYAxis;
     dataLabels: ApexDataLabels;
+    title: ApexTitleSubtitle;
     legend: ApexLegend;
+    plotOptions: ApexPlotOptions;
+    labels: any;
 };
 
 @Component({
-    selector: 'app-messages-per-channel',
+    selector: 'app-voice-per-user',
     providers: [GraphDataService],
-    templateUrl: './messages-per-channel.component.html',
-    styleUrl: './messages-per-channel.component.scss',
+    templateUrl: './voice-per-user.component.html',
+    styleUrls: ['./voice-per-user.component.scss'],
     standalone: true,
     imports: [NgApexchartsModule, CommonModule],
 })
-export class MessagesPerChannelComponent implements OnInit {
+export class VoicePerUserComponent implements OnInit {
     public chartOptions: Partial<ChartOptions> | any;
 
-    topChannels: IChartData[] = [];
-
+    topUsers: { name: string; count: number }[] = [];
     timeFilter: string = 'month';
 
     constructor(private graphDataService: GraphDataService) {}
@@ -55,27 +63,28 @@ export class MessagesPerChannelComponent implements OnInit {
                 days = '30';
         }
 
-        this.graphDataService.getMessagesPerChannelChartData(days).subscribe({
+        this.graphDataService.getMessagesPerUserChartData(days).subscribe({
             next: (data) => {
-                const channels = data.map((channel: { name: string; count: number }) => ({
-                    name: channel.name,
-                    count: channel.count,
+                const users = data.map((user: { name: string; count: number }) => ({
+                    name: user.name,
+                    count: user.count,
                 }));
 
-                this.topChannels = channels.sort((a: IChartData, b: IChartData) => b.count - a.count).slice(0, 10);
+                this.topUsers = users.sort((a: any, b: any) => b.count - a.count).slice(0, 10);
 
-                const chartData = this.topChannels.map((channel) => channel.count);
-                const chartLabels = this.topChannels.map((channel) => channel.name);
+                const seriesData = users.map((user: any) => user.count);
+                const labels = users.map((user: any) => user.name);
+
                 this.chartOptions = {
-                    series: chartData,
+                    series: seriesData,
                     chart: {
                         type: 'pie',
-                        height: 425,
+                        height: '425',
                         toolbar: {
                             show: false,
                         },
                     },
-                    labels: chartLabels,
+                    labels: labels,
                     dataLabels: {
                         enabled: true,
                     },

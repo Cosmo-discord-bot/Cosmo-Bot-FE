@@ -63,7 +63,7 @@ export class MessagesPerUserComponent implements OnInit {
                 days = '30';
         }
 
-        this.graphDataService.getPerUserChartData(days).subscribe({
+        this.graphDataService.getMessagesPerUserChartData(days).subscribe({
             next: (data) => {
                 const users = data.map((user: { name: string; count: number }) => ({
                     name: user.name,
