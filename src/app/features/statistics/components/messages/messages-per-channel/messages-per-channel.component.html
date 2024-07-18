@@ -1,0 +1,28 @@
+<div class="chart-container">
+    <apx-chart
+        [series]="chartOptions?.series"
+        [chart]="chartOptions?.chart"
+        [title]="chartOptions?.title"
+        [legend]="chartOptions?.legend"
+        [labels]="chartOptions?.labels"
+    >
+    </apx-chart>
+</div>
+
+<div class="table-container">
+    <h2>Top 10 Channels</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Channel Name</th>
+            <th>Message Count</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let channel of topChannels">
+            <td>{{ channel.name }}</td>
+            <td>{{ channel.count }}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>

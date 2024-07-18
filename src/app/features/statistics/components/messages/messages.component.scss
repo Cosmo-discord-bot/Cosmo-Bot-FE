@@ -1,0 +1,49 @@
+// $statistics-background-color: #202328;
+$statistics-background-color: #dfe0e1;
+$statistics-border-radius: 10px;
+
+#messages-charts-wrapper {
+    display: flex;
+    margin: auto;
+    //justify-items: center;
+    width: 80%;
+    flex-direction: column;
+    justify-content: center;
+
+    app-messages-per-day {
+        padding: 2rem;
+        margin-top: 2rem;
+        display: flex;
+        justify-content: center;
+        background-color: $statistics-background-color;
+        border-radius: $statistics-border-radius;
+    }
+
+    app-messages-per-channel {
+        padding: 2rem;
+        margin-top: 2rem;
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        background-color: $statistics-background-color;
+        border-radius: $statistics-border-radius;
+    }
+
+    app-messages-per-user {
+        padding: 2rem;
+        margin-top: 2rem;
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        background-color: $statistics-background-color;
+        border-radius: $statistics-border-radius;
+    }
+
+    app-messages-heatmap {
+        padding: 2rem;
+        margin: 2rem 0;
+        height: fit-content;
+        background-color: $statistics-background-color;
+        border-radius: $statistics-border-radius;
+    }
+}
