@@ -1,34 +1,42 @@
 import { Component, OnInit } from '@angular/core';
-import { ApexChart, ApexDataLabels, ApexLegend, ApexNonAxisChartSeries, NgApexchartsModule } from 'ng-apexcharts';
+import {
+    ApexAxisChartSeries,
+    ApexChart,
+    ApexDataLabels,
+    ApexLegend,
+    ApexPlotOptions,
+    ApexTitleSubtitle,
+    ApexXAxis,
+    ApexYAxis,
+    NgApexchartsModule,
+} from 'ng-apexcharts';
 import { GraphDataService } from '../../../services/graph-data.service';
 import { CommonModule } from '@angular/common';
 
-interface IChartData {
-    name: string;
-    hours: number;
-}
-
 export type ChartOptions = {
-    series: ApexNonAxisChartSeries;
+    series: ApexAxisChartSeries;
     chart: ApexChart;
-    labels: any;
+    xaxis: ApexXAxis;
+    yaxis: ApexYAxis;
     dataLabels: ApexDataLabels;
+    title: ApexTitleSubtitle;
     legend: ApexLegend;
+    plotOptions: ApexPlotOptions;
+    labels: any;
 };
 
 @Component({
     selector: 'app-voice-per-channel',
     providers: [GraphDataService],
     templateUrl: './voice-per-channel.component.html',
-    styleUrl: './voice-per-channel.component.scss',
+    styleUrls: ['./voice-per-channel.component.scss'],
     standalone: true,
     imports: [NgApexchartsModule, CommonModule],
 })
 export class VoicePerChannelComponent implements OnInit {
     public chartOptions: Partial<ChartOptions> | any;
 
-    topChannels: IChartData[] = [];
-
+    topChannels: { name: string; hours: number }[] = [];
     timeFilter: string = 'month';
 
     constructor(private graphDataService: GraphDataService) {}
@@ -57,29 +65,31 @@ export class VoicePerChannelComponent implements OnInit {
 
         this.graphDataService.getVoicePerChannelChartData(days).subscribe({
             next: (data) => {
-                const processedData = this.processVoiceData(data);
-                this.topChannels = processedData.sort((a, b) => b.hours - a.hours).slice(0, 10);
+                const channels = this.processVoiceData(data);
 
-                const chartData = this.topChannels.map((channel) => channel.hours);
-                const chartLabels = this.topChannels.map((channel) => channel.name);
+                this.topChannels = channels.sort((a, b) => b.hours - a.hours).slice(0, 10);
+
+                const seriesData = this.topChannels.map((channel) => channel.hours);
+                const labels = this.topChannels.map((channel) => channel.name);
+
                 this.chartOptions = {
-                    series: chartData,
+                    series: seriesData,
                     chart: {
                         type: 'pie',
-                        height: 425,
+                        height: '425',
                         toolbar: {
                             show: false,
                         },
                     },
-                    labels: chartLabels,
+                    labels: labels,
                     dataLabels: {
                         enabled: true,
-                        formatter: function (val: number, opts: any) {
-                            return opts.w.config.series[opts.seriesIndex].toFixed(2) + ' hours';
+                        formatter: (val: number, opts: any) => {
+                            return `${val.toFixed(1)}%`;
                         },
                     },
                     title: {
-                        text: 'Top 10 Channels by Voice Activity',
+                        text: 'Top 10 Voice Channels by Usage',
                         align: 'center',
                     },
                     legend: {
@@ -100,21 +110,21 @@ export class VoicePerChannelComponent implements OnInit {
         });
     }
 
-    private processVoiceData(data: { date: string; userData: { [userId: string]: number } }[]): IChartData[] {
-        const channelTotals: { [channelId: string]: number } = {};
+    private processVoiceData(data: { [date: string]: { [channelName: string]: number } }): {
+        name: string;
+        hours: number;
+    }[] {
+        const channelTotals: { [channelName: string]: number } = {};
 
-        data.forEach((dayData) => {
-            Object.entries(dayData.userData).forEach(([channelId, hours]) => {
-                if (!channelTotals[channelId]) {
-                    channelTotals[channelId] = 0;
+        Object.values(data).forEach((dayData) => {
+            Object.entries(dayData).forEach(([channelName, hours]) => {
+                if (!channelTotals[channelName]) {
+                    channelTotals[channelName] = 0;
                 }
-                channelTotals[channelId] += hours;
+                channelTotals[channelName] += hours;
             });
         });
 
-        return Object.entries(channelTotals).map(([channelId, hours]) => ({
-            name: channelId, // You might want to replace this with actual channel names if available
-            hours: hours,
-        }));
+        return Object.entries(channelTotals).map(([name, hours]) => ({ name, hours }));
     }
 }

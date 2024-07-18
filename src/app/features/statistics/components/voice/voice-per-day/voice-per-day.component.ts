@@ -49,7 +49,7 @@ export class VoicePerDayComponent implements OnInit {
                 days = '30';
         }
 
-        this.graphDataService.getVoicePerChannelChartData(days).subscribe((data) => {
+        this.graphDataService.getVoicePerUserChartData(days).subscribe((data) => {
             const processedData = this.processChartData(data);
             this.initChart(processedData);
         });
@@ -107,7 +107,7 @@ export class VoicePerDayComponent implements OnInit {
                 },
                 y: {
                     formatter: function (value: number) {
-                        return value.toFixed(2) + ' hours';
+                        return value.toFixed(0) + ' hours';
                     },
                 },
             },

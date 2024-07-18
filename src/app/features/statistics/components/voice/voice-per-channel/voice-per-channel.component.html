@@ -1,17 +1,18 @@
 <div class="chart-container">
     <apx-chart
-        [series]="chartOptions?.series"
-        [chart]="chartOptions?.chart"
-        [title]="chartOptions?.title"
-        [legend]="chartOptions?.legend"
-        [labels]="chartOptions?.labels"
-        [dataLabels]="chartOptions?.dataLabels"
+        [series]="chartOptions?.series || []"
+        [chart]="chartOptions?.chart || {}"
+        [dataLabels]="chartOptions?.dataLabels || {}"
+        [title]="chartOptions?.title || {}"
+        [legend]="chartOptions?.legend || {}"
+        [plotOptions]="chartOptions?.plotOptions || {}"
+        [labels]="chartOptions?.labels || []"
     >
     </apx-chart>
 </div>
 
 <div class="table-container">
-    <h2>Top 10 Channels by Voice Activity</h2>
+    <h2>Top 10 Voice Channels</h2>
     <table>
         <thead>
         <tr>
@@ -20,7 +21,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let channel of topChannels">
+        <tr *ngFor="let channel of topChannels" class="voice-per-channel-tr">
             <td>{{ channel.name }}</td>
             <td>{{ channel.hours.toFixed(2) }}</td>
         </tr>
