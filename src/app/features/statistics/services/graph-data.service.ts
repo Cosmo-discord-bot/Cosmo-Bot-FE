@@ -54,7 +54,7 @@ export class GraphDataService {
         );
     }
 
-    getVoicePerChannelChartData(days: string): Observable<any> {
+    getVoicePerUserChartData(days: string): Observable<any> {
         return this.http
             .get<{
                 [date: string]: { [userId: string]: number };
@@ -67,5 +67,11 @@ export class GraphDataService {
                     }));
                 })
             );
+    }
+
+    getVoicePerChannelChartData(days: string): Observable<any> {
+        return this.http.get<{ [date: string]: { [channelName: string]: number } }>(
+            `${environment.apiUrl}/statistics/${this.guildId}/voice/perChannel?days=${days}`
+        );
     }
 }
