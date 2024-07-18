@@ -16,7 +16,7 @@ export class SidebarComponent implements OnInit {
     currentRoute: string = '';
     sidebarItems: { [key: string]: string[] } = {
         home: ['TODO'],
-        statistics: ['Overview', 'Users', 'Voice', 'Messages'],
+        statistics: ['Overview', 'Music', 'Voice', 'Messages'],
         // TODO: Get commands from API
         commands: ['Overview', 'Music', 'Settings'],
         docs: ['API'],
