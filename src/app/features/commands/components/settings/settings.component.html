@@ -1,1 +1,35 @@
-<p>settings works!</p>
+<!-- config-form.component.html -->
+<mat-card>
+    <mat-card-title>Guild Configuration</mat-card-title>
+    <mat-card-content>
+        <form [formGroup]="configForm" (ngSubmit)="onSubmit()">
+            <mat-form-field appearance="fill">
+                <mat-label>Main Channel ID</mat-label>
+                <input matInput formControlName="mainChannelId">
+                <mat-error *ngIf="configForm.get('mainChannelId')?.hasError('required')">
+                    Main Channel ID is required
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+                <mat-label>Roles Channel ID</mat-label>
+                <input matInput formControlName="rolesChannelId">
+                <mat-error *ngIf="configForm.get('rolesChannelId')?.hasError('required')">
+                    Roles Channel ID is required
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+                <mat-label>Events Group ID</mat-label>
+                <input matInput formControlName="eventsGroupId">
+                <mat-error *ngIf="configForm.get('eventsGroupId')?.hasError('required')">
+                    Events Group ID is required
+                </mat-error>
+            </mat-form-field>
+
+            <button mat-raised-button color="primary" type="submit" [disabled]="!configForm.valid">
+                Save Configuration
+            </button>
+        </form>
+    </mat-card-content>
+</mat-card>
