@@ -1,5 +1,0 @@
-export const environment = {
-    production: false,
-    apiUrl: 'http://localhost:8083/api/v1/',
-    discordGuildId: '286049248838156290',
-};
