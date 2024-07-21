@@ -50,6 +50,10 @@ export class SidebarComponent implements OnInit {
         this.sidebarService.getAvailableGuilds().subscribe({
             next: (guilds: { guildId: string; name: string; picture: string }[]) => {
                 this.availableGuilds = guilds;
+                if (this.availableGuilds.length > 0) {
+                    this.selectedGuildId = this.availableGuilds[0].guildId;
+                    this.onGuildChange({ value: this.selectedGuildId });
+                }
             },
             error: (error) => {
                 console.error('Error fetching available guilds:', error);
