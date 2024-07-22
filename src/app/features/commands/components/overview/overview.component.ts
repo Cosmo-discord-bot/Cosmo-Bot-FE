@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-    selector: 'app-overview',
+    selector: 'app-commands-overview',
     standalone: true,
     imports: [],
     templateUrl: './overview.component.html',

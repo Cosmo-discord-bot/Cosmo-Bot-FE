@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '@env/environment';
@@ -9,22 +9,32 @@ export class GraphDataService {
     constructor(private http: HttpClient) {}
 
     // TODO: Replace with actual guild ID
-    private guildId = environment.discordGuildId;
+    // private guildId = environment.discordGuildId;
 
-    getMessagesPerDayChartData(days: string): Observable<any> {
-        return this.http.get<{ [key: string]: number }>(`${environment.apiUrl}/statistics/${this.guildId}/messages/perDay?days=${days}`).pipe(
-            map((response: { [key: string]: number }) => {
-                return Object.keys(response).map((date) => ({
-                    x: new Date(date),
-                    y: response[date],
-                }));
-            })
-        );
+    getMessagesPerDayChartData(guildId: string, days: string): Observable<any> {
+        const token = localStorage.getItem('discord_token');
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        return this.http
+            .get<{
+                [key: string]: number;
+            }>(`${environment.apiUrl}/statistics/${guildId}/messages/perDay?days=${days}`, { headers })
+            .pipe(
+                map((response: { [key: string]: number }) => {
+                    return Object.keys(response).map((date) => ({
+                        x: new Date(date),
+                        y: response[date],
+                    }));
+                })
+            );
     }
 
-    getMessagesPerChannelChartData(days: string): Observable<any> {
+    getMessagesPerChannelChartData(guildId: string, days: string): Observable<any> {
+        const token = localStorage.getItem('discord_token');
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
         return this.http
-            .get<{ [key: string]: { name: string; count: number } }>(`${environment.apiUrl}/statistics/${this.guildId}/messages/perChannel?days=${days}`)
+            .get<{
+                [key: string]: { name: string; count: number };
+            }>(`${environment.apiUrl}/statistics/${guildId}/messages/perChannel?days=${days}`, { headers })
             .pipe(
                 map((response) => {
                     return Object.values(response).map((channel: { name: string; count: number }) => ({
@@ -35,9 +45,13 @@ export class GraphDataService {
             );
     }
 
-    getMessagesPerUserChartData(days: string): Observable<any> {
+    getMessagesPerUserChartData(guildId: string, days: string): Observable<any> {
+        const token = localStorage.getItem('discord_token');
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
         return this.http
-            .get<{ [key: string]: { name: string; count: number } }>(`${environment.apiUrl}/statistics/${this.guildId}/messages/perUser?days=${days}`)
+            .get<{
+                [key: string]: { name: string; count: number };
+            }>(`${environment.apiUrl}/statistics/${guildId}/messages/perUser?days=${days}`, { headers })
             .pipe(
                 map((response) => {
                     return Object.values(response).map((channel: { name: string; count: number }) => ({
@@ -48,17 +62,23 @@ export class GraphDataService {
             );
     }
 
-    getMessagesActivityHeatmap(days: string): Observable<any> {
-        return this.http.get<{ [dayOfWeek: string]: { [hour: string]: number } }>(
-            `${environment.apiUrl}/statistics/${this.guildId}/messages/heatmap?days=${days}`
-        );
+    getMessagesActivityHeatmap(guildId: string, days: string): Observable<any> {
+        const token = localStorage.getItem('discord_token');
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        return this.http.get<{
+            [dayOfWeek: string]: { [hour: string]: number };
+        }>(`${environment.apiUrl}/statistics/${guildId}/messages/heatmap?days=${days}`, {
+            headers,
+        });
     }
 
-    getVoicePerUserChartData(days: string): Observable<any> {
+    getVoicePerUserChartData(guildId: string, days: string): Observable<any> {
+        const token = localStorage.getItem('discord_token');
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
         return this.http
             .get<{
                 [date: string]: { [userId: string]: number };
-            }>(`${environment.apiUrl}/statistics/${this.guildId}/voice/activity?days=${days}`)
+            }>(`${environment.apiUrl}/statistics/${guildId}/voice/activity?days=${days}`, { headers })
             .pipe(
                 map((response) => {
                     return Object.entries(response).map(([date, userData]) => ({
@@ -69,9 +89,12 @@ export class GraphDataService {
             );
     }
 
-    getVoicePerChannelChartData(days: string): Observable<any> {
+    getVoicePerChannelChartData(guildId: string, days: string): Observable<any> {
+        const token = localStorage.getItem('discord_token');
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
         return this.http.get<{ [date: string]: { [channelName: string]: number } }>(
-            `${environment.apiUrl}/statistics/${this.guildId}/voice/perChannel?days=${days}`
+            `${environment.apiUrl}/statistics/${guildId}/voice/perChannel?days=${days}`,
+            { headers }
         );
     }
 }

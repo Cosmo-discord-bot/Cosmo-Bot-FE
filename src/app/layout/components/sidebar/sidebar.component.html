@@ -1,5 +1,13 @@
 <mat-sidenav-container id="sidebar-container">
     <mat-sidenav mode="side" opened id="sidebar">
+        <mat-form-field id="sidebar-guild-selector">
+            <mat-label>Select Guild</mat-label>
+            <mat-select [(ngModel)]="selectedGuildId" (selectionChange)="onGuildChange($event)">
+                <mat-option *ngFor="let guild of availableGuilds" [value]="guild.guildId">
+                    {{ guild.name }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
         <mat-nav-list *ngIf="sidebarItems[currentRoute]">
             <a mat-list-item *ngFor="let item of sidebarItems[currentRoute]" [routerLink]="[currentRoute, item.toLowerCase()]">
                 {{ item }}

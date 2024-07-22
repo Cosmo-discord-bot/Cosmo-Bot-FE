@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ApexChart, ApexDataLabels, ApexLegend, ApexNonAxisChartSeries, NgApexchartsModule } from 'ng-apexcharts';
 import { GraphDataService } from '../../../services/graph-data.service';
 import { CommonModule } from '@angular/common';
+import { Store } from '@ngrx/store';
+import { Subscription } from 'rxjs';
+import { selectSelectedGuildId } from '@selectors/guild.selectors';
 
 interface IChartData {
     name: string;
@@ -24,17 +27,27 @@ export type ChartOptions = {
     standalone: true,
     imports: [NgApexchartsModule, CommonModule],
 })
-export class VoicePerUserComponent implements OnInit {
+export class VoicePerUserComponent implements OnInit, OnDestroy {
     public chartOptions: Partial<ChartOptions> | any;
+    guildId: string | null = null;
+    private guildSubscription: Subscription | null = null;
 
     topUsers: IChartData[] = [];
 
     timeFilter: string = 'month';
 
-    constructor(private graphDataService: GraphDataService) {}
+    constructor(
+        private graphDataService: GraphDataService,
+        private store: Store
+    ) {}
 
     ngOnInit(): void {
-        this.updateTimeFilter(this.timeFilter);
+        this.guildSubscription = this.store.select(selectSelectedGuildId).subscribe((guildId) => {
+            if (guildId && guildId !== this.guildId) {
+                this.guildId = guildId;
+                this.updateTimeFilter(this.timeFilter);
+            }
+        });
     }
 
     updateTimeFilter(filter: string): void {
@@ -55,7 +68,7 @@ export class VoicePerUserComponent implements OnInit {
                 days = '30';
         }
 
-        this.graphDataService.getVoicePerUserChartData(days).subscribe({
+        this.graphDataService.getVoicePerUserChartData(this.guildId ?? '', days).subscribe({
             next: (data) => {
                 const processedData = this.processVoiceData(data);
                 this.topUsers = processedData.sort((a, b) => b.hours - a.hours).slice(0, 10);
@@ -116,5 +129,11 @@ export class VoicePerUserComponent implements OnInit {
             name: userid, // You might want to replace this with actual channel names if available
             hours: hours,
         }));
+    }
+
+    ngOnDestroy() {
+        if (this.guildSubscription) {
+            this.guildSubscription.unsubscribe();
+        }
     }
 }

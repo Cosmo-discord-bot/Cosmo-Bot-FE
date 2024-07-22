@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ApexAxisChartSeries, ApexChart, ApexDataLabels, ApexPlotOptions, ApexTooltip, ApexXAxis, ApexYAxis, NgApexchartsModule } from 'ng-apexcharts';
 import { GraphDataService } from '../../../services/graph-data.service';
+import { Subscription } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { selectSelectedGuildId } from '@selectors/guild.selectors';
 
 export type ChartOptions = {
     series: ApexAxisChartSeries;
@@ -20,15 +23,25 @@ export type ChartOptions = {
     standalone: true,
     imports: [NgApexchartsModule],
 })
-export class VoiceHeatmapComponent implements OnInit {
+export class VoiceHeatmapComponent implements OnInit, OnDestroy {
     public chartOptions: Partial<ChartOptions> | any;
+    guildId: string | null = null;
+    private guildSubscription: Subscription | null = null;
 
-    constructor(private graphDataService: GraphDataService) {}
+    constructor(
+        private graphDataService: GraphDataService,
+        private store: Store
+    ) {}
 
     ngOnInit() {
-        this.graphDataService.getMessagesActivityHeatmap('30').subscribe((data) => {
-            const transformedData = this.transformData(data);
-            this.initChart(transformedData);
+        this.guildSubscription = this.store.select(selectSelectedGuildId).subscribe((guildId) => {
+            if (guildId && guildId !== this.guildId) {
+                this.guildId = guildId;
+                this.graphDataService.getMessagesActivityHeatmap(this.guildId, '30').subscribe((data) => {
+                    const transformedData = this.transformData(data);
+                    this.initChart(transformedData);
+                });
+            }
         });
     }
 
@@ -126,5 +139,11 @@ export class VoiceHeatmapComponent implements OnInit {
                 },
             },
         };
+    }
+
+    ngOnDestroy() {
+        if (this.guildSubscription) {
+            this.guildSubscription.unsubscribe();
+        }
     }
 }

@@ -1,7 +1,9 @@
 import { Routes } from '@angular/router';
+import { DiscordCallbackComponent } from './features/auth/discord-callback/discord-callback.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: '/home', pathMatch: 'full' },
+    { path: 'auth/discord/callback', component: DiscordCallbackComponent },
     { path: 'home', loadComponent: () => import('./features/home/home.component').then((m) => m.HomeComponent) },
     { path: 'docs', loadComponent: () => import('./features/docs/docs.component').then((m) => m.DocsComponent) },
     {
