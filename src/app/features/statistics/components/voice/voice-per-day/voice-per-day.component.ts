@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ApexAxisChartSeries, ApexChart, ApexDataLabels, ApexTitleSubtitle, ApexTooltip, ApexXAxis, ApexYAxis, NgApexchartsModule } from 'ng-apexcharts';
 import { GraphDataService } from '../../../services/graph-data.service';
+import { Subscription } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { selectSelectedGuildId } from '@selectors/guild.selectors';
 
 export type ChartOptions = {
     series: ApexAxisChartSeries;
@@ -20,15 +23,25 @@ export type ChartOptions = {
     styleUrl: './voice-per-day.component.scss',
     imports: [NgApexchartsModule],
 })
-export class VoicePerDayComponent implements OnInit {
+export class VoicePerDayComponent implements OnInit, OnDestroy {
     public chartOptions!: Partial<ChartOptions> | any;
+    guildId: string | null = null;
+    private guildSubscription: Subscription | null = null;
 
     timeFilter: string = 'month';
 
-    constructor(private graphDataService: GraphDataService) {}
+    constructor(
+        private graphDataService: GraphDataService,
+        private store: Store
+    ) {}
 
     ngOnInit(): void {
-        this.updateTimeFilter('month');
+        this.guildSubscription = this.store.select(selectSelectedGuildId).subscribe((guildId) => {
+            if (guildId && guildId !== this.guildId) {
+                this.guildId = guildId;
+                this.updateTimeFilter(this.timeFilter);
+            }
+        });
     }
 
     updateTimeFilter(filter: string): void {
@@ -49,7 +62,7 @@ export class VoicePerDayComponent implements OnInit {
                 days = '30';
         }
 
-        this.graphDataService.getVoicePerUserChartData(days).subscribe((data) => {
+        this.graphDataService.getVoicePerUserChartData(this.guildId ?? '', days).subscribe((data) => {
             const processedData = this.processChartData(data);
             this.initChart(processedData);
         });
@@ -112,5 +125,11 @@ export class VoicePerDayComponent implements OnInit {
                 },
             },
         };
+    }
+
+    ngOnDestroy() {
+        if (this.guildSubscription) {
+            this.guildSubscription.unsubscribe();
+        }
     }
 }

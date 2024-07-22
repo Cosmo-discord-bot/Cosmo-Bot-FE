@@ -12,3 +12,5 @@ import { VoiceHeatmapComponent } from './voice-heatmap/voice-heatmap.component';
     styleUrl: './voice.component.scss',
 })
 export class VoiceComponent {}
+
+// TODO: Check why voice isnt working when changing guildId

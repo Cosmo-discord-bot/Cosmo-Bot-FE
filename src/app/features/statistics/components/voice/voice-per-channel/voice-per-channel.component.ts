@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
     ApexAxisChartSeries,
     ApexChart,
@@ -12,6 +12,9 @@ import {
 } from 'ng-apexcharts';
 import { GraphDataService } from '../../../services/graph-data.service';
 import { CommonModule } from '@angular/common';
+import { Subscription } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { selectSelectedGuildId } from '@selectors/guild.selectors';
 
 export type ChartOptions = {
     series: ApexAxisChartSeries;
@@ -33,16 +36,26 @@ export type ChartOptions = {
     standalone: true,
     imports: [NgApexchartsModule, CommonModule],
 })
-export class VoicePerChannelComponent implements OnInit {
+export class VoicePerChannelComponent implements OnInit, OnDestroy {
     public chartOptions: Partial<ChartOptions> | any;
+    guildId: string | null = null;
+    private guildSubscription: Subscription | null = null;
 
     topChannels: { name: string; hours: number }[] = [];
     timeFilter: string = 'month';
 
-    constructor(private graphDataService: GraphDataService) {}
+    constructor(
+        private graphDataService: GraphDataService,
+        private store: Store
+    ) {}
 
     ngOnInit(): void {
-        this.updateTimeFilter(this.timeFilter);
+        this.guildSubscription = this.store.select(selectSelectedGuildId).subscribe((guildId) => {
+            if (guildId && guildId !== this.guildId) {
+                this.guildId = guildId;
+                this.updateTimeFilter(this.timeFilter);
+            }
+        });
     }
 
     updateTimeFilter(filter: string): void {
@@ -63,7 +76,7 @@ export class VoicePerChannelComponent implements OnInit {
                 days = '30';
         }
 
-        this.graphDataService.getVoicePerChannelChartData(days).subscribe({
+        this.graphDataService.getVoicePerChannelChartData(this.guildId ?? '', days).subscribe({
             next: (data) => {
                 const channels = this.processVoiceData(data);
 
@@ -126,5 +139,11 @@ export class VoicePerChannelComponent implements OnInit {
         });
 
         return Object.entries(channelTotals).map(([name, hours]) => ({ name, hours }));
+    }
+
+    ngOnDestroy() {
+        if (this.guildSubscription) {
+            this.guildSubscription.unsubscribe();
+        }
     }
 }
