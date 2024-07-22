@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ApexAxisChartSeries, ApexChart, ApexDataLabels, ApexTitleSubtitle, ApexTooltip, ApexXAxis, ApexYAxis, NgApexchartsModule } from 'ng-apexcharts';
 import { GraphDataService } from '../../../services/graph-data.service';
+import { selectSelectedGuildId } from '@selectors/guild.selectors';
+import { Store } from '@ngrx/store';
+import { Subscription } from 'rxjs';
 
 export type ChartOptions = {
     series: ApexAxisChartSeries;
@@ -20,15 +23,25 @@ export type ChartOptions = {
     styleUrl: './messages-per-day.component.scss',
     imports: [NgApexchartsModule],
 })
-export class MessagesPerDayComponent implements OnInit {
+export class MessagesPerDayComponent implements OnInit, OnDestroy {
     public chartOptions!: Partial<ChartOptions> | any;
+    guildId: string | null = null;
+    private guildSubscription: Subscription | null = null;
 
     timeFilter: string = 'month';
 
-    constructor(private graphDataService: GraphDataService) {}
+    constructor(
+        private graphDataService: GraphDataService,
+        private store: Store
+    ) {}
 
     ngOnInit(): void {
-        this.updateTimeFilter('month');
+        this.guildSubscription = this.store.select(selectSelectedGuildId).subscribe((guildId) => {
+            if (guildId && guildId !== this.guildId) {
+                this.guildId = guildId;
+                this.updateTimeFilter(this.timeFilter);
+            }
+        });
     }
 
     updateTimeFilter(filter: string): void {
@@ -49,7 +62,7 @@ export class MessagesPerDayComponent implements OnInit {
                 days = '30';
         }
 
-        this.graphDataService.getMessagesPerDayChartData(days).subscribe({
+        this.graphDataService.getMessagesPerDayChartData(this.guildId ?? '', days).subscribe({
             next: (data) => {
                 const seriesData = data.map((item: any) => ({ x: item.x, y: item.y }));
                 this.initChart(seriesData);
@@ -101,5 +114,11 @@ export class MessagesPerDayComponent implements OnInit {
                 },
             },
         };
+    }
+
+    ngOnDestroy() {
+        if (this.guildSubscription) {
+            this.guildSubscription.unsubscribe();
+        }
     }
 }
