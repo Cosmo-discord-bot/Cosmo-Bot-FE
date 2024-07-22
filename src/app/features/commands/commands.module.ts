@@ -15,6 +15,7 @@ import { MatCard, MatCardContent, MatCardTitle } from '@angular/material/card';
 import { MatFormField, MatFormFieldModule } from '@angular/material/form-field'; // Add this import
 import { MatButton } from '@angular/material/button';
 import { MatInput } from '@angular/material/input';
+import { MatOption, MatSelect } from '@angular/material/select';
 
 @NgModule({
     declarations: [MusicComponent, SettingsComponent],
@@ -29,6 +30,8 @@ import { MatInput } from '@angular/material/input';
         MatButton,
         MatInput,
         MatFormFieldModule,
+        MatSelect,
+        MatOption,
     ],
     providers: [provideHttpClient(withInterceptorsFromDi())],
     exports: [

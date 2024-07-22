@@ -4,26 +4,38 @@
     <mat-card-content>
         <form [formGroup]="configForm" (ngSubmit)="onSubmit()">
             <mat-form-field appearance="fill">
-                <mat-label>Main Channel ID</mat-label>
-                <input matInput formControlName="mainChannelId">
+                <mat-label>Main Channel</mat-label>
+                <mat-select formControlName="mainChannelId">
+                    <mat-option *ngFor="let channel of textChannels" [value]="channel.channelId">
+                        {{ channel.name }}
+                    </mat-option>
+                </mat-select>
                 <mat-error *ngIf="configForm.get('mainChannelId')?.hasError('required')">
-                    Main Channel ID is required
+                    Main Channel is required
                 </mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="fill">
-                <mat-label>Roles Channel ID</mat-label>
-                <input matInput formControlName="rolesChannelId">
+                <mat-label>Roles Channel</mat-label>
+                <mat-select formControlName="rolesChannelId">
+                    <mat-option *ngFor="let channel of textChannels" [value]="channel.channelId">
+                        {{ channel.name }}
+                    </mat-option>
+                </mat-select>
                 <mat-error *ngIf="configForm.get('rolesChannelId')?.hasError('required')">
-                    Roles Channel ID is required
+                    Roles Channel is required
                 </mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="fill">
-                <mat-label>Events Group ID</mat-label>
-                <input matInput formControlName="eventsGroupId">
+                <mat-label>Events Group</mat-label>
+                <mat-select formControlName="eventsGroupId">
+                    <mat-option *ngFor="let channel of groupChannels" [value]="channel.channelId">
+                        {{ channel.name }}
+                    </mat-option>
+                </mat-select>
                 <mat-error *ngIf="configForm.get('eventsGroupId')?.hasError('required')">
-                    Events Group ID is required
+                    Events Group is required
                 </mat-error>
             </mat-form-field>
 

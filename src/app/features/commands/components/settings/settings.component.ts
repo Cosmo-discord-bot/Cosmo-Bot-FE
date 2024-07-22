@@ -6,6 +6,12 @@ import { CommandsService } from '../../services/commands.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { selectSelectedGuildId } from '@selectors/guild.selectors';
 
+interface Channel {
+    channelId: string;
+    name: string;
+    type: string;
+}
+
 @Component({
     selector: 'app-settings',
     templateUrl: './settings.component.html',
@@ -13,6 +19,9 @@ import { selectSelectedGuildId } from '@selectors/guild.selectors';
 })
 export class SettingsComponent implements OnInit, OnDestroy {
     configForm: FormGroup;
+    channels: Channel[] = [];
+    textChannels: Channel[] = [];
+    groupChannels: Channel[] = [];
     guildId: string | null = null;
     private guildSubscription: Subscription | null = null;
 
@@ -26,6 +35,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
             mainChannelId: ['', [Validators.required]],
             rolesChannelId: ['', [Validators.required]],
             eventsGroupId: ['', [Validators.required]],
+            channels: this.fb.array([]),
         });
     }
 
@@ -42,6 +52,10 @@ export class SettingsComponent implements OnInit, OnDestroy {
         this.commandsService.getConfig(guildId).subscribe({
             next: (config) => {
                 this.configForm.patchValue(config);
+                this.channels = config.allChannels;
+                this.textChannels = config.textChannels;
+                this.groupChannels = config.groupChannels;
+                this.configForm.get('channels')?.setValue(config.allChannels.map((channel: Channel) => channel.channelId));
             },
             error: (error) => {
                 console.error('Error fetching config:', error);
