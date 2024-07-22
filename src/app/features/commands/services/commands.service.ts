@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from '@env/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -12,7 +12,9 @@ export class CommandsService {
     constructor(private http: HttpClient) {}
 
     getConfig(guildId: string): Observable<any> {
-        return this.http.get(`${this.apiUrl}/configuration/${guildId}`);
+        const token = localStorage.getItem('discord_token');
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        return this.http.get(`${this.apiUrl}/configuration/${guildId}`, { headers });
     }
 
     updateConfig(
@@ -24,6 +26,8 @@ export class CommandsService {
             eventsGroupId: string;
         }
     ): Observable<any> {
-        return this.http.post(`${this.apiUrl}/configuration/${guildId}`, config);
+        const token = localStorage.getItem('discord_token');
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        return this.http.post(`${this.apiUrl}/configuration/${guildId}`, config, { headers });
     }
 }

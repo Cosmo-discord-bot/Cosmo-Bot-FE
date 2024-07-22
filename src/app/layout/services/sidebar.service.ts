@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '@env/environment';
 
@@ -12,6 +12,14 @@ export class SidebarService {
     constructor(private http: HttpClient) {}
 
     getAvailableGuilds(): Observable<any[]> {
-        return this.http.get<{ guildId: string; name: string; picture: string }[]>(`${this.apiUrl}/clientInfo/guilds`);
+        const token = localStorage.getItem('discord_token');
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        return this.http.get<
+            {
+                guildId: string;
+                name: string;
+                picture: string;
+            }[]
+        >(`${this.apiUrl}/clientInfo/guilds`, { headers });
     }
 }
