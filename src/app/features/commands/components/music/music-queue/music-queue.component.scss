@@ -1,0 +1,56 @@
+.queue-container {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    height: 100%; // Ensure the container takes full height of its parent
+    display: flex;
+    flex-direction: column;
+
+    h2 {
+        text-align: center;
+        color: #333;
+    }
+
+    .queue-list-container {
+        height: 70%; // This makes the list container 70% of the queue-container
+        overflow-y: auto; // This enables vertical scrolling
+    }
+
+    .queue-list {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+
+        .queue-item {
+            display: flex;
+            background-color: #f5f5f5;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+            .thumbnail {
+                width: 80px;
+                height: 80px;
+                object-fit: cover;
+            }
+
+            .item-details {
+                padding: 10px;
+                flex-grow: 1;
+
+                h3 {
+                    margin: 0 0 5px 0;
+                    font-size: 16px;
+                    color: #333;
+                }
+
+                p {
+                    margin: 0;
+                    font-size: 14px;
+                    color: #666;
+                }
+            }
+        }
+    }
+}

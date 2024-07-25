@@ -32,6 +32,9 @@
             ],
             "@reducers/*": [
                 "app/core/store/reducers/*"
+            ],
+            "@interfaces/*": [
+                "app/interfaces/*"
             ]
         }
     },
