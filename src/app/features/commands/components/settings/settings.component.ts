@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
-import { CommandsService } from '../../services/commands.service';
+import { SettingsService } from '../../services/settings.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { selectSelectedGuildId } from '@selectors/guild.selectors';
 
@@ -28,7 +28,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
     constructor(
         private fb: FormBuilder,
         private store: Store,
-        private commandsService: CommandsService,
+        private commandsService: SettingsService,
         private snackBar: MatSnackBar
     ) {
         this.configForm = this.fb.group({

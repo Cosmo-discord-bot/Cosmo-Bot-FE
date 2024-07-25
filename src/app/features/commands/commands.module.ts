@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { MusicComponent } from './components/music/music.component';
 
 // Import components
-import { MusicComponent } from './components/music/music.component';
 import { SettingsComponent } from './components/settings/settings.component';
 
 // Import services
@@ -18,7 +18,7 @@ import { MatInput } from '@angular/material/input';
 import { MatOption, MatSelect } from '@angular/material/select';
 
 @NgModule({
-    declarations: [MusicComponent, SettingsComponent],
+    declarations: [SettingsComponent],
     imports: [
         CommonModule,
         RouterModule.forChild(commandsRoutes),
@@ -32,6 +32,7 @@ import { MatOption, MatSelect } from '@angular/material/select';
         MatFormFieldModule,
         MatSelect,
         MatOption,
+        MusicComponent,
     ],
     providers: [provideHttpClient(withInterceptorsFromDi())],
     exports: [
