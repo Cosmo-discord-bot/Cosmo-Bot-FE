@@ -47,7 +47,7 @@ export class MusicQueueComponent implements OnInit, OnDestroy {
             },
             (error) => {
                 console.error('Error fetching queue:', error);
-                // Handle error (e.g., show an error message to the user)
+                this.queue = [];
             }
         );
     }

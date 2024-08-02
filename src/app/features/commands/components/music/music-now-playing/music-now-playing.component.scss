@@ -1,0 +1,77 @@
+/* music-now-playing.component.scss */
+
+#now-playing-component {
+    padding: 20px;
+
+    h2 {
+        text-align: center;
+        color: #FFF;
+    }
+}
+
+.now-playing-content {
+    padding: 20px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.track-info {
+    display: flex;
+    align-items: center;
+    margin-top: 15px;
+    color: rgb(51, 51, 51);
+}
+
+.track-thumbnail {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-right: 20px;
+}
+
+.track-details {
+    h3 {
+        margin: 0 0 10px 0;
+    }
+
+    p {
+        margin: 5px 0;
+    }
+}
+
+.progress-bar {
+    width: 100%;
+    height: 10px;
+    background-color: #ddd;
+    border-radius: 5px;
+    margin: 20px 0;
+    overflow: hidden;
+}
+
+.progress {
+    height: 100%;
+    background-color: #4CAF50;
+    transition: width 0.5s ease-in-out;
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+
+    button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        background-color: #4CAF50;
+        color: white;
+        cursor: pointer;
+        transition: background-color 0.3s;
+
+        &:hover {
+            background-color: #45a049;
+        }
+    }
+}

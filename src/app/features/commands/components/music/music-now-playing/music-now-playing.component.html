@@ -1,0 +1,20 @@
+<div id="now-playing-component">
+    <h2>Now Playing</h2>
+    <div class="now-playing-content" *ngIf="currentTrack">
+        <div class="track-info">
+            <img [src]="currentTrack.thumbnail" [alt]="currentTrack.title" class="track-thumbnail">
+            <div class="track-details">
+                <h3>{{ currentTrack.title }}</h3>
+                <p>{{ currentTrack.author }}</p>
+                <p>Duration: {{ currentTrack.duration }}</p>
+            </div>
+        </div>
+        <div class="progress-bar">
+            <div class="progress" [style.width]="progress + '%'"></div>
+        </div>
+        <div class="controls">
+            <button (click)="playPause()">{{ isPlaying ? 'Pause' : 'Play' }}</button>
+            <button (click)="nextTrack()">Next</button>
+        </div>
+    </div>
+</div>
