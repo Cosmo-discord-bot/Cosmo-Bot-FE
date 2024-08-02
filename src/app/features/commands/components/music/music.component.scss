@@ -1,0 +1,16 @@
+#music-component {
+    display: flex;
+    justify-content: space-between; /* This will push the items to the edges */
+    width: 90%;
+    margin: auto;
+}
+
+#music-component > * {
+    flex-basis: 48%; /* Set each child to take up 48% of the container width */
+    max-width: 48%; /* Ensure it doesn't grow beyond 48% */
+}
+
+app-music-queue {
+    height: 90%; /* Set the height of the queue to 70% of the viewport height */
+    overflow-y: auto; /* Enable vertical scrolling */
+}

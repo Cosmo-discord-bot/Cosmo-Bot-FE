@@ -9,11 +9,11 @@
 
     h2 {
         text-align: center;
-        color: #333;
+        color: #FFF
     }
 
     .queue-list-container {
-        height: 70%; // This makes the list container 70% of the queue-container
+        height: 100%; // This makes the list container 70% of the queue-container
         overflow-y: auto; // This enables vertical scrolling
     }
 
@@ -41,13 +41,13 @@
 
                 h3 {
                     margin: 0 0 5px 0;
-                    font-size: 16px;
+                    font-size: 1.1rem;
                     color: #333;
                 }
 
                 p {
                     margin: 0;
-                    font-size: 14px;
+                    font-size: 1rem;
                     color: #666;
                 }
             }
