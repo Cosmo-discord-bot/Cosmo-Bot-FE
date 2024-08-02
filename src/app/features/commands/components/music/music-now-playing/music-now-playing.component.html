@@ -1,6 +1,6 @@
 <div id="now-playing-component">
     <h2>Now Playing</h2>
-    <div class="now-playing-content" *ngIf="currentTrack">
+    <div class="now-playing-content" *ngIf="currentTrack; else noMusic">
         <div class="track-info">
             <img [src]="currentTrack.thumbnail" [alt]="currentTrack.title" class="track-thumbnail">
             <div class="track-details">
@@ -17,4 +17,17 @@
             <button (click)="nextTrack()">Next</button>
         </div>
     </div>
+
+    <ng-template #noMusic>
+        <div class="no-music-placeholder">
+            <div class="placeholder-icon">
+                <i class="fas fa-music"></i>
+            </div>
+            <h3>No music playing</h3>
+            <p>Start playing some tunes to liven up your day!</p>
+            <button class="start-playing-btn" (click)="playPause()">
+                <i class="fas fa-play"></i> Start Playing
+            </button>
+        </div>
+    </ng-template>
 </div>

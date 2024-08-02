@@ -3,18 +3,56 @@
     margin: auto;
     padding: 20px;
     font-family: Arial, sans-serif;
-    height: 100%; // Ensure the container takes full height of its parent
+    height: 100%;
     display: flex;
     flex-direction: column;
 
+    .queue-list-container {
+        height: 100%;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .empty-queue-placeholder {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        background-color: #f5f5f5;
+        border-radius: 8px;
+        padding: 20px;
+        text-align: center;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+        .placeholder-icon {
+            font-size: 64px;
+            color: #888;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+    }
+
     h2 {
         text-align: center;
-        color: #FFF
+        color: #FFF;
     }
 
     .queue-list-container {
-        height: 100%; // This makes the list container 70% of the queue-container
-        overflow-y: auto; // This enables vertical scrolling
+        height: 100%;
+        overflow-y: auto;
     }
 
     .queue-list {
@@ -28,6 +66,60 @@
             border-radius: 8px;
             overflow: hidden;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: relative;
+            cursor: move;
+            padding-right: 80px;
+
+            &:hover .hover-options {
+                opacity: 1;
+                transform: translateX(0);
+            }
+
+            .hover-options {
+                display: flex;
+                position: absolute;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                background-color: rgba(0, 0, 0, 0.7);
+                opacity: 0;
+                transform: translateX(100%);
+                transition: all 0.3s ease;
+
+                button {
+                    background-color: transparent;
+                    border: none;
+                    color: white;
+                    width: 5rem;
+                    height: 100%;
+                    cursor: pointer;
+                    transition: background-color 0.3s;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 20px;
+
+                    &:hover {
+                        background-color: rgba(255, 255, 255, 0.2);
+                    }
+
+                    &.remove-btn::before {
+                        content: '\2715';
+                        color: #ff4d4d;
+                        transition: transform 0.3s ease;
+                    }
+
+                    &.move-first-btn::before {
+                        content: '\2191';
+                        color: #4dff4d;
+                        transition: transform 0.3s ease;
+                    }
+
+                    &:hover::before {
+                        transform: scale(1.2);
+                    }
+                }
+            }
 
             .thumbnail {
                 width: 80px;
@@ -53,4 +145,27 @@
             }
         }
     }
+}
+
+// Styles for drag preview
+.cdk-drag-preview {
+    box-sizing: border-box;
+    border-radius: 4px;
+    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+    0 8px 10px 1px rgba(0, 0, 0, 0.14),
+    0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+// Placeholder style while dragging
+.cdk-drag-placeholder {
+    opacity: 0;
+}
+
+// Animation while dragging
+.cdk-drag-animating {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.queue-list.cdk-drop-list-dragging .queue-item:not(.cdk-drag-placeholder) {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }

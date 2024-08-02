@@ -19,7 +19,7 @@ export class MusicNowPlayingComponent implements OnInit, OnDestroy {
     @Input() guildId!: string;
 
     currentTrack: ITrack | null = null;
-    isPlaying: boolean = false;
+    isPlaying: boolean = true;
     progress: number = 0;
     volume: number = 100;
     queue: ITrack[] = [];
