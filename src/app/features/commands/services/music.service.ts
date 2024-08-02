@@ -115,4 +115,35 @@ export class MusicService {
     setVolume(guildId: string, volume: number) {
         this.socket.emit('setVolume', guildId, volume);
     }
+
+    updateQueueOrder(guildId: string, track: string, index: number) {
+        this.socket.emit('updateQueueOrder', { guildId, track, index }, (error: any) => {
+            if (error) {
+                console.error('Error updating queue order:', error);
+            } else {
+                console.log('Queue order updated successfully');
+            }
+        });
+    }
+
+    removeFromQueue(guildId: string, trackId: string) {
+        console.log('Removing track from queue');
+        this.socket.emit('removeFromQueue', { guildId, trackId }, (error: any) => {
+            if (error) {
+                console.error('Error removing track from queue:', error);
+            } else {
+                console.log('Track removed from queue successfully');
+            }
+        });
+    }
+
+    moveToFirst(guildId: string, trackId: string) {
+        this.socket.emit('moveToFirst', { guildId, trackId }, (error: any) => {
+            if (error) {
+                console.error('Error moving track to first position:', error);
+            } else {
+                console.log('Track moved to first position successfully');
+            }
+        });
+    }
 }

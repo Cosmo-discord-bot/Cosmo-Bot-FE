@@ -5,13 +5,14 @@ import { Store } from '@ngrx/store';
 import { selectSelectedGuildId } from '@selectors/guild.selectors';
 import { NgForOf, NgIf } from '@angular/common';
 import { ITrack } from '@interfaces/ITrack';
+import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
     selector: 'app-music-queue',
     templateUrl: './music-queue.component.html',
     styleUrl: './music-queue.component.scss',
     standalone: true,
-    imports: [NgIf, NgForOf],
+    imports: [NgIf, NgForOf, CdkDropList, CdkDrag],
 })
 export class MusicQueueComponent implements OnInit, OnDestroy {
     queue: ITrack[] = [];
@@ -46,7 +47,7 @@ export class MusicQueueComponent implements OnInit, OnDestroy {
                 this.queue = data;
             },
             (error) => {
-                console.error('Error fetching queue:', error);
+                // console.error('Error fetching queue:', error);
                 this.queue = [];
             }
         );
@@ -58,6 +59,31 @@ export class MusicQueueComponent implements OnInit, OnDestroy {
         }
         if (this.queueSubscription) {
             this.queueSubscription.unsubscribe();
+        }
+    }
+
+    onDrop(event: CdkDragDrop<ITrack[]>) {
+        if (this.guildId) {
+            const trackId = this.queue[event.previousIndex].id;
+            const newPosition = event.currentIndex;
+
+            // Update the local queue
+            moveItemInArray(this.queue, event.previousIndex, event.currentIndex);
+
+            // Send the update to the server
+            this.musicService.updateQueueOrder(this.guildId, trackId, newPosition);
+        }
+    }
+
+    removeTrack(trackId: string) {
+        if (this.guildId) {
+            this.musicService.removeFromQueue(this.guildId, trackId);
+        }
+    }
+
+    moveToFirst(trackId: string) {
+        if (this.guildId) {
+            this.musicService.moveToFirst(this.guildId, trackId);
         }
     }
 }
