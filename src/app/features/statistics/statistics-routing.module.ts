@@ -7,11 +7,11 @@ import { MessagesComponent } from './components/messages/messages.component';
 import { VoiceComponent } from './components/voice/voice.component';
 
 export const statisticsRoutes: Routes = [
-    { path: 'overview', component: OverviewComponent },
+    // { path: 'overview', component: OverviewComponent },
     { path: 'music', component: MusicComponent },
     { path: 'voice', component: VoiceComponent },
     { path: 'messages', component: MessagesComponent },
-    { path: '', redirectTo: 'overview', pathMatch: 'full' },
+    { path: '', redirectTo: 'music', pathMatch: 'full' },
 ];
 
 @NgModule({
