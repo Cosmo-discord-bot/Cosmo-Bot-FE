@@ -24,6 +24,8 @@ export class SettingsService {
             mainChannelId: string;
             rolesChannelId: string;
             eventsGroupId: string;
+            djRoles: string[];
+            RBACRoles: string[];
         }
     ): Observable<any> {
         const token = localStorage.getItem('discord_token');
