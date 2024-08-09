@@ -1,1 +1,26 @@
-<p>home works!</p>
+<div class="home-container">
+    <header>
+        <h1>Welcome to Our Discord Bot</h1>
+        <p>Enhance your Discord server with powerful features and seamless integration.</p>
+    </header>
+
+    <section class="features">
+        <h2>Key Features</h2>
+        <div class="feature-cards">
+            <mat-card *ngFor="let feature of features" class="feature-card">
+                <mat-card-header>
+                    <mat-icon mat-card-avatar>{{feature.icon}}</mat-icon>
+                    <mat-card-title>{{feature.name}}</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <p>{{feature.description}}</p>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </section>
+
+    <section class="cta">
+        <h2>Ready to get started?</h2>
+        <button mat-raised-button color="primary">Add to Discord</button>
+    </section>
+</div>
