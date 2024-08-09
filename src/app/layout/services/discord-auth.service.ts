@@ -38,7 +38,7 @@ export class DiscordAuthService {
     }
 
     handleCallback(code: string): Observable<any> {
-        return this.http.post(`${this.backendUrl}/auth/discord?code=${code}`, null).pipe(
+        return this.http.post(`${this.backendUrl}/authenticate/discord?code=${code}`, null).pipe(
             tap((response: any) => {
                 localStorage.setItem('discord_token', response.token);
                 this.isAuthenticatedSubject.next(true);
