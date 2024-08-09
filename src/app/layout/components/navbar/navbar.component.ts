@@ -51,7 +51,9 @@ export class NavbarComponent implements OnInit {
         if (tokenInfo) {
             this.userProfile = {
                 username: tokenInfo.user.username,
-                avatarUrl: `https://cdn.discordapp.com/avatars/${tokenInfo.user.id}/${tokenInfo.user.avatar}.png`,
+                avatarUrl:
+                    `https://cdn.discordapp.com/avatars/${tokenInfo.user.id}/${tokenInfo.user.avatar}.png` ||
+                    'https://archive.org/download/discordprofilepictures/discordblue.png',
                 guilds: tokenInfo.guilds,
             };
         } else {

@@ -21,9 +21,9 @@ export class SidebarComponent implements OnInit {
     currentRoute: string = '';
     currentSubRoute: string = '';
     sidebarItems: { [key: string]: string[] } = {
-        home: ['TODO'],
-        statistics: ['Overview', 'Music', 'Voice', 'Messages'],
-        commands: ['Overview', 'Music', 'Settings'],
+        home: [],
+        statistics: ['Music', 'Voice', 'Messages'],
+        commands: ['Music', 'Settings'],
         docs: ['API'],
     };
     availableGuilds: { guildId: string; name: string; picture: string }[] = [];

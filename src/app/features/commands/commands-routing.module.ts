@@ -6,10 +6,10 @@ import { SettingsComponent } from './components/settings/settings.component';
 import { MusicComponent } from './components/music/music.component';
 
 export const commandsRoutes: Routes = [
-    { path: 'overview', component: OverviewComponent },
+    // { path: 'overview', component: OverviewComponent },
     { path: 'music', component: MusicComponent },
     { path: 'settings', component: SettingsComponent },
-    { path: '', redirectTo: 'overview', pathMatch: 'full' },
+    { path: '', redirectTo: 'music', pathMatch: 'full' },
 ];
 
 @NgModule({
