@@ -39,6 +39,24 @@
                 </mat-error>
             </mat-form-field>
 
+            <mat-form-field appearance="fill">
+                <mat-label>Music Roles</mat-label>
+                <mat-select formControlName="djRoles" multiple>
+                    <mat-option *ngFor="let role of guildRoles" [value]="role.id">
+                        {{ role.name }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+                <mat-label>Bot Usage Roles</mat-label>
+                <mat-select formControlName="RBACRoles" multiple>
+                    <mat-option *ngFor="let role of guildRoles" [value]="role.id">
+                        {{ role.name }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
             <button mat-raised-button color="primary" type="submit" [disabled]="!configForm.valid">
                 Save Configuration
             </button>

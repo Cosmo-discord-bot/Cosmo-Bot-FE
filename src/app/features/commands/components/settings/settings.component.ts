@@ -12,6 +12,11 @@ interface Channel {
     type: string;
 }
 
+interface Role {
+    id: string;
+    name: string;
+}
+
 @Component({
     selector: 'app-settings',
     templateUrl: './settings.component.html',
@@ -22,19 +27,22 @@ export class SettingsComponent implements OnInit, OnDestroy {
     channels: Channel[] = [];
     textChannels: Channel[] = [];
     groupChannels: Channel[] = [];
+    guildRoles: Role[] = [];
     guildId: string | null = null;
     private guildSubscription: Subscription | null = null;
 
     constructor(
         private fb: FormBuilder,
         private store: Store,
-        private commandsService: SettingsService,
+        private settingsService: SettingsService,
         private snackBar: MatSnackBar
     ) {
         this.configForm = this.fb.group({
             mainChannelId: ['', [Validators.required]],
             rolesChannelId: ['', [Validators.required]],
             eventsGroupId: ['', [Validators.required]],
+            djRoles: [[]],
+            RBACRoles: [[]],
             channels: this.fb.array([]),
         });
     }
@@ -49,12 +57,17 @@ export class SettingsComponent implements OnInit, OnDestroy {
     }
 
     loadConfig(guildId: string) {
-        this.commandsService.getConfig(guildId).subscribe({
+        this.settingsService.getConfig(guildId).subscribe({
             next: (config) => {
-                this.configForm.patchValue(config);
+                this.configForm.patchValue({
+                    ...config,
+                    djRoles: config.djRoles || [],
+                    RBACRoles: config.RBACRoles || [],
+                });
                 this.channels = config.allChannels;
                 this.textChannels = config.textChannels;
                 this.groupChannels = config.groupChannels;
+                this.guildRoles = config.guildRoles;
                 this.configForm.get('channels')?.setValue(config.allChannels.map((channel: Channel) => channel.channelId));
             },
             error: (error) => {
@@ -67,9 +80,12 @@ export class SettingsComponent implements OnInit, OnDestroy {
     onSubmit() {
         if (this.configForm.valid && this.guildId) {
             const formValue = this.configForm.value;
-            formValue.guildId = this.guildId;
-            console.log('Submitting config:', formValue);
-            this.commandsService.updateConfig(this.guildId, formValue).subscribe({
+            const submitConfig = {
+                ...formValue,
+                guildId: this.guildId,
+            };
+            console.log('Submitting config:', submitConfig);
+            this.settingsService.updateConfig(this.guildId, submitConfig).subscribe({
                 next: (response) => {
                     console.log('Config updated:', response);
                     this.snackBar.open('Configuration updated successfully', 'Close', { duration: 3000 });
