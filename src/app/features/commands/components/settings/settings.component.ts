@@ -79,23 +79,41 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
     onSubmit() {
         if (this.configForm.valid && this.guildId) {
-            const formValue = this.configForm.value;
-            const submitConfig = {
-                ...formValue,
-                guildId: this.guildId,
-            };
-            console.log('Submitting config:', submitConfig);
-            this.settingsService.updateConfig(this.guildId, submitConfig).subscribe({
+            this.settingsService.checkRBACPermission(this.guildId).subscribe({
                 next: (response) => {
-                    console.log('Config updated:', response);
-                    this.snackBar.open('Configuration updated successfully', 'Close', { duration: 3000 });
+                    if (response.hasPermission) {
+                        // Proceed with saving the data
+                        this.saveConfig();
+                    } else {
+                        this.snackBar.open('You do not have permission to modify these settings', 'Close', { duration: 3000 });
+                    }
                 },
                 error: (error) => {
-                    console.error('Error updating config:', error);
-                    this.snackBar.open('Error updating configuration', 'Close', { duration: 3000 });
+                    console.error('Error checking permissions:', error);
+                    this.snackBar.open(error.error.error, 'Close', { duration: 3000 });
                 },
             });
         }
+    }
+
+    saveConfig() {
+        const formValue = this.configForm.value;
+        const submitConfig = {
+            ...formValue,
+            guildId: this.guildId,
+        };
+        console.log('Submitting config:', submitConfig);
+
+        this.settingsService.updateConfig(this.guildId!, submitConfig).subscribe({
+            next: (response) => {
+                console.log('Config updated:', response);
+                this.snackBar.open('Configuration updated successfully', 'Close', { duration: 3000 });
+            },
+            error: (error) => {
+                console.error('Error updating config:', error);
+                this.snackBar.open('Error updating configuration', 'Close', { duration: 3000 });
+            },
+        });
     }
 
     ngOnDestroy() {
