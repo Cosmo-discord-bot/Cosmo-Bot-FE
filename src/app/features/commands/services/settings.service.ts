@@ -32,4 +32,10 @@ export class SettingsService {
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
         return this.http.post(`${this.apiUrl}/configuration/${guildId}`, config, { headers });
     }
+
+    checkRBACPermission(guildId: string): Observable<{ hasPermission: boolean }> {
+        const token = localStorage.getItem('discord_token');
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        return this.http.post<{ hasPermission: boolean }>(`${this.apiUrl}/guildInfo/${guildId}`, {}, { headers });
+    }
 }
