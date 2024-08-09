@@ -19,6 +19,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class SidebarComponent implements OnInit {
     currentRoute: string = '';
+    currentSubRoute: string = '';
     sidebarItems: { [key: string]: string[] } = {
         home: ['TODO'],
         statistics: ['Overview', 'Music', 'Voice', 'Messages'],
@@ -42,7 +43,9 @@ export class SidebarComponent implements OnInit {
                 map((event: NavigationEnd) => event.urlAfterRedirects)
             )
             .subscribe((url: string) => {
-                this.currentRoute = url.split('/')[1] || 'home';
+                const urlParts = url.split('/').filter((part) => part !== '');
+                this.currentRoute = urlParts[0] || 'home';
+                this.currentSubRoute = urlParts[1] || (this.sidebarItems[this.currentRoute] ? this.sidebarItems[this.currentRoute][0].toLowerCase() : '');
             });
     }
 

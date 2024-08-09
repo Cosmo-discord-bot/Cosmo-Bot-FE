@@ -74,14 +74,40 @@ $custom-theme: mat.define-dark-theme(
 @include mat.all-component-themes($custom-theme);
 
 // Global styles
+:root {
+    --md-text-font: 'Roboto';
+    --md-code-font: 'Roboto Mono';
+    --md-typeset-color: #333333; /* Adjust this color as needed */
+}
+
 html,
 body {
     height: 100%;
+
 }
 
 body {
     margin: 0;
-    font-family: Arial, 'Helvetica Neue', sans-serif;
+    font-family: var(--md-text-font, _), -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
+
+    background-image: url('/assets/background.png') !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-attachment: fixed !important;
+    min-height: 100vh !important;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: inherit !important;
+    filter: blur(20px);
+    opacity: 0.99;
+    z-index: -1;
 }
 
 app-root {
@@ -91,7 +117,6 @@ app-root {
 }
 
 app-navbar {
-    font-family: 'Arial', 'Helvetica Neue', sans-serif;
     position: fixed;
     top: 0;
     left: 0;
@@ -107,4 +132,36 @@ app-sidebar {
     bottom: 0;
     width: 100%;
     overflow-y: auto; // Allow scrolling if sidebar content is too long
+}
+
+.main-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding-top: 64px; // Adjust this to match your navbar height
+}
+
+.content-wrapper {
+    width: 80%;
+    display: flex;
+}
+
+.mat-drawer-container {
+    background-color: transparent !important;
+}
+
+.mat-drawer {
+    background-color: transparent !important;
+}
+
+.mat-mdc-card {
+    background-color: transparent !important;
+}
+
+.mat-sidenav-content {
+    background-color: transparent !important;
+}
+
+.mat-toolbar{
+    background-color: transparent !important;
 }

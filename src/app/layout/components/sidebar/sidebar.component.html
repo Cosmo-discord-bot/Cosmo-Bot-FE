@@ -8,6 +8,9 @@
                 </mat-option>
             </mat-select>
         </mat-form-field>
+        <div class="current-route-indicator">
+            {{ currentRoute | titlecase }}
+        </div>
         <mat-nav-list *ngIf="sidebarItems[currentRoute]">
             <a mat-list-item *ngFor="let item of sidebarItems[currentRoute]" [routerLink]="[currentRoute, item.toLowerCase()]">
                 {{ item }}
